@@ -10,12 +10,12 @@ export function Header() {
 
                 {/* Links */}
                 <div className="flex gap-6">
-                    <a href="#ministries" className="text-sm font-montserrat hover:text-blue-400 transition-colors">MINISTÉRIOS</a>
-                    <a href="#cell" className="text-sm font-montserrat hover:text-blue-400 transition-colors">CÉLULAS</a>
-                    <a href="#visit" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PLANEJAR VISITA</a>
-                    <a href="#programation" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PROGRAMAÇÃO</a>
-                    <a href="#about" className="text-sm font-montserrat hover:text-blue-400 transition-colors">QUEM SOMOS</a>
-                    <a href="#events" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
+                    <a href="/ministerios" className="text-sm font-montserrat hover:text-blue-400 transition-colors">MINISTÉRIOS</a>
+                    <a href="/celulas" className="text-sm font-montserrat hover:text-blue-400 transition-colors">CÉLULAS</a>
+                    <a href="/#visit" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PLANEJAR VISITA</a>
+                    <a href="/#programation" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PROGRAMAÇÃO</a>
+                    <a href="/about" className="text-sm font-montserrat hover:text-blue-400 transition-colors">QUEM SOMOS</a>
+                    <a href="/events" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
                 </div>
             </div>
         </header>
