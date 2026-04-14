@@ -1,17 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Header } from "@/components/all/Header";
 import { Input } from "@/components/all/Input";
 import { Select } from "@/components/all/Select";
 import { Wrapper } from "@/components/all/Wrapper";
 import { CellCard } from "@/components/celulas/CellCard";
 import { Main } from "@/components/celulas/Main";
+import styles from './styles.module.css'
 import foto from "../../../public/assets/BANNER 2.png";
+import { Footer } from "@/components/all/Footer";
 
 export default function Celulas() {
-    const itemsPerPage = 9; // 3x3 grid
+
+    const itemsPerPage = 9;
     const [currentPage, setCurrentPage] = useState(1);
 
     // simulação dos dados
@@ -32,46 +35,20 @@ export default function Celulas() {
         currentPage * itemsPerPage
     );
 
-    const container = {
-        hidden: {},
-        show: {
-            transition: {
-            staggerChildren: 0.08,
-            },
-        },
-    };
-
-    const item = {
-        hidden: { opacity: 0, y: 40 },
-        show: {
-            opacity: 1,
-            y: 0,
-            transition: {
-            duration: 0.5,
-            ease: "easeOut" as const,
-            },
-        },
-    };
-
   return (
     <>
-      <section className="relative h-full w-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-50 w-full">
-          <Header />
-        </div>
+      <section className="relative h-full w-full overflow-visible">
+        <Header />
 
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/assets/video1.mp4" type="video/mp4" />
-        </video>
+        <Image 
+        alt="Foto de fundo"
+        src={foto}
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-65
+        md:opacity-85"
+        />
 
-        <div className="absolute inset-0 bg-[#050505]/40 z-1" />
-        <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-b from-transparent to-[#050505] z-2" />
+        <div className="absolute inset-0 bg-[#050505]/40 z-[1]" />
+        <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-b from-transparent to-[#050505] z-[2]" />
 
         <Main />
       </section>
@@ -80,12 +57,14 @@ export default function Celulas() {
         <section className="w-full mt-10">
 
           {/* FILTERS */}
-          <div className="w-full flex justify-between">
-            <div className="max-w-1/3 w-full">
+          <div className="max-w-11/12 flex-col flex justify-between mx-auto gap-2
+          md:flex-row md:w-full md:max-w-full md:mx-0 md:gap-0">
+            <div className="w-full md:max-w-1/3">
               <Input placeholder="Nome da célula" type="text" />
             </div>
 
-            <div className="max-w-1/3 w-full flex gap-4 justify-end">
+            <div className="w-full flex max-w-full gap-2
+            md:justify-end md:max-w-1/3 md:gap-4">
               <Select>
                 <option className="bg-[#131415]" value="">Todas as regiões</option>
                 <option className="bg-[#131415]" value="norte">Norte</option>
@@ -101,19 +80,16 @@ export default function Celulas() {
           </div>
 
             {/* GRID */}
-            <motion.main
-            key={currentPage} // importante pra animar ao trocar página
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="w-full grid grid-cols-3 mt-32 gap-10"
+            <main
+            className="w-11/12 grid grid-cols-1 mt-16 md:mt-32 gap-8 mx-auto
+            md:grid-cols-3 md:gap-10 md:w-full md:mx-0"
             >
             {currentItems.map((cell) => (
-                <motion.div key={cell.id} variants={item}>
-                <CellCard {...cell} />
-                </motion.div>
+                <div className={`${styles.animateFadeUp}`} key={cell.id}>
+                  <CellCard {...cell} />
+                </div>
             ))}
-            </motion.main>
+            </main>
 
           {/* PAGINAÇÃO */}
           <div className="flex justify-center mt-10 mb-20 gap-2">
@@ -140,6 +116,9 @@ export default function Celulas() {
           </div>
 
         </section>
+
+
+        <Footer />
       </Wrapper>
     </>
   );

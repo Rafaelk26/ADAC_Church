@@ -1,7 +1,7 @@
 export function Select({ children }: { children: React.ReactNode }) {
     return(
         <>
-            <div className="relative group">
+            <div className="w-full relative group">
                 <select
                 className="w-full bg-gray-400/10 p-3 rounded-md 
                 border-2 border-gray-500 font-manrope transition-all

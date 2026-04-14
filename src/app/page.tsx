@@ -1,3 +1,5 @@
+"use client";
+
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { Main } from "@/components/home/Main";
@@ -15,8 +17,8 @@ export default function Home() {
     
     <>
       {/* PRINCIPAL HERO SECTION */}
-      <section className="relative h-full w-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-50 w-full">
+      <section className="relative h-full w-full overflow-visible">
+        <div className="absolute top-0 left-0 z-40 w-full">
           <Header />
         </div>
 
