@@ -18,12 +18,10 @@ export default function Ministerios() {
     useEffect(()=> {
         const minister = Array.from({ length: 10 }).map((_, i) => ({
             id: i,
-            nomeCelula: "Célula X",
-            bairroCelula: "Gaviotas",
-            faixaCelula: "18-40 Anos",
-            generoCelula: "Masculino",
+            nomeMinisterio: "Célula X",
             nomeLider: "Líder X",
-            fotoCelula: foto,
+            status: true,
+            fotoMinisterio: foto,
         }));
 
         setMinisters(minister)
