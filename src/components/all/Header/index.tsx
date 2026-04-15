@@ -21,7 +21,7 @@ export function Header() {
           <a href="/#visit" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PLANEJAR VISITA</a>
           <a href="/#programation" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PROGRAMAÇÃO</a>
           <a href="/about" className="text-sm font-montserrat hover:text-blue-400 transition-colors">QUEM SOMOS</a>
-          <a href="/events" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
+          <a href="/eventos" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
         </nav>
 
         {/* BOTÃO HAMBURGUER */}
@@ -49,7 +49,7 @@ export function Header() {
         <a onClick={() => setOpen(false)} href="/#visit">PLANEJAR VISITA</a>
         <a onClick={() => setOpen(false)} href="/#programation">PROGRAMAÇÃO</a>
         <a onClick={() => setOpen(false)} href="/about">QUEM SOMOS</a>
-        <a onClick={() => setOpen(false)} href="/events">EVENTOS</a>
+        <a onClick={() => setOpen(false)} href="/eventos">EVENTOS</a>
       </div>
     </header>
   );
