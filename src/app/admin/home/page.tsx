@@ -1,10 +1,13 @@
 import Image from "next/image"
 import { Header } from "@/components/all/Header"
 import { Footer } from "@/components/all/Footer"
-import { MinistersCard } from '@/components/ministerios/MinistersCard'
+import { CardInformation } from "@/components/admin/home/CardInformation"
+import { TableInformation } from "@/components/admin/home/TableInformation"
+
 import foto from "../../../../public/assets/backgroundAdmin.png"
 
 export default function AdminHome(){
+
     return(
         <>
             <section className="relative h-full w-full overflow-visible">
@@ -18,9 +21,9 @@ export default function AdminHome(){
                     className="absolute inset-0 w-full h-screen object-cover opacity-65 z-10 md:opacity-85"
                 />
 
-                <div className="relative z-20 flex h-full w-full items-start justify-center px-6 pt-32">
+                <div className="relative z-20 flex h-full w-full items-start justify-center px-6 pt-20">
                     <div className="max-w-7xl w-full">
-                    <h1 className="text-[2.7rem] md:text-4xl font-manrope font-bold text-white leading-[1.1]">
+                    <h1 className="text-[2.7rem] md:text-4xl font-manrope font-bold text-white">
                         Administrador
                     </h1>
                     </div>
@@ -30,35 +33,44 @@ export default function AdminHome(){
 
                 {/* INFO CARDS */}
 
-                <div className="flex flex-col items-center w-full bg-[#282828]/30">
+                <div className="relative flex flex-col items-center w-full bg-[#282828]/70 z-20 mt-6 mb-10 p-7 rounded-tr-4xl rounded-tl-4xl">
                     
                     {/* CARDS */}
                     <div className="max-w-7xl w-full flex gap-4">
-                        <div className="w-full bg-[#0e0e0e] rounded-xl h-48 relative overflow-hidden">
-                            <h1 className="text-[2.7rem] md:text-4xl font-manrope font-bold text-white leading-[1.1]">
-                                Administrador
-                            </h1>
-                        </div>
+                       <CardInformation
+                       nome="Trabalhadores" 
+                       numeros={2}
+                       legenda="Pessoas interessadas em trabalhar em ministério da igreja."
+                       link="#" />
 
-                        <div className="w-full rounded-xl h-56 relative overflow-hidden">
-                            <h1 className="text-[2.7rem] md:text-4xl font-manrope font-bold text-white leading-[1.1]">
-                                Administrador
-                            </h1>
-                        </div>
+                       <CardInformation
+                       nome="Eventos Ativos" 
+                       numeros={"3"}
+                       legenda="Eventos que estão aberto ao público para ser frequentado."
+                       link="#" />
 
-                        <div className="w-full rounded-xl h-56 relative overflow-hidden">
-                            <h1 className="text-[2.7rem] md:text-4xl font-manrope font-bold text-white leading-[1.1]">
-                                Administrador
-                            </h1>
-                        </div>
+                       <CardInformation
+                       nome="Células Ativas" 
+                       numeros={218}
+                       legenda="Células abertas para novos membros participarem."
+                       link="#" />
 
-                        <div className="w-full border-2 border-gray-500/80 rounded-xl h-56 relative overflow-hidden">
-                            <h1 className="text-[2.7rem] md:text-4xl font-manrope font-bold text-white leading-[1.1]">
-                                Administrador
-                            </h1>
-                        </div>
+                       <CardInformation
+                       nome="Visitantes Interessados" 
+                       numeros={12}
+                       legenda="Pessoas interessadas em fazer uma visita na igreja."
+                       link="#" />
+                    </div>
+
+
+                    {/* TABLE */}
+
+                    <div className="max-w-7xl w-full mt-16">
+                        <h1 className="text-[2.7rem] md:text-3xl font-montserrat font-light text-white">Trabalhadores disponíveis</h1>
+                        <TableInformation />
                     </div>
                 </div>
+                <Footer />
             </section>
         </>
     )
