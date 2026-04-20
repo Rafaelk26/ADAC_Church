@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
-import banner from "../../../../../public/assets/BANNER 3.png"
 
-export function TableInformation(){
+export function TableInformationVisit(){
 
     const [interesses, setInteresses] = useState<any[]>([])
 
@@ -16,29 +14,41 @@ export function TableInformation(){
                 id: 1,
                 nomeCadastrado: "John Doe",
                 whatsappCadastrado: "(12) 90000-0000",
-                ministerioNome: "Mídia - Mix House",
-                ministerioFoto: banner,
             }, 
             {
                 id: 2,
                 nomeCadastrado: "Robert Nadson",
                 whatsappCadastrado: "(12) 90000-0000",
-                ministerioNome: "Rede Kids e Teens",
-                ministerioFoto: banner,
             }, 
             {
                 id: 3,
                 nomeCadastrado: "John Doe",
                 whatsappCadastrado: "(12) 90000-0000",
-                ministerioNome: "Rede Kids e Teens",
-                ministerioFoto: banner,
             }, 
             {
                 id: 4,
                 nomeCadastrado: "John Doe",
                 whatsappCadastrado: "(12) 90000-0000",
-                ministerioNome: "Mídia - Mix House",
-                ministerioFoto: banner,
+            },
+            {
+                id: 5,
+                nomeCadastrado: "John Doe",
+                whatsappCadastrado: "(12) 90000-0000",
+            },
+            {
+                id: 6,
+                nomeCadastrado: "John Doe",
+                whatsappCadastrado: "(12) 90000-0000",
+            },
+            {
+                id: 7,
+                nomeCadastrado: "John Doe",
+                whatsappCadastrado: "(12) 90000-0000",
+            },
+            {
+                id: 8,
+                nomeCadastrado: "John Doe",
+                whatsappCadastrado: "(12) 90000-0000",
             }
         ]
 
@@ -49,7 +59,7 @@ export function TableInformation(){
 
         
         <>  
-            <div className={`${styles.customScroll} max-h-[320px] overflow-y-auto pr-2`}>
+            <div className={`${styles.customScroll} w-full max-h-[320px] overflow-y-auto pr-2`}>
                 <table className="w-full mt-5">
                     <thead>
                         <tr className="bg-[#090909] text-left">
@@ -58,9 +68,6 @@ export function TableInformation(){
                         </th>
                         <th className="py-4 px-4 text-base font-light font-montserrat text-gray-300">
                             TELEFONE
-                        </th>
-                        <th className="py-4 px-4 text-base font-light font-montserrat text-gray-300">
-                            MINISTÉRIO
                         </th>
                         <th className="py-4 px-4 text-base font-light font-montserrat text-gray-300 rounded-tr-xl">
                             AÇÃO
@@ -87,19 +94,6 @@ export function TableInformation(){
 
                                     <td className="py-4 px-4">
                                         {i?.whatsappCadastrado}
-                                    </td>
-
-                                    <td className="py-4 px-4">
-                                        <div className="flex gap-3 items-center">
-                                        <Image
-                                            alt="Foto do Ministério"
-                                            src={i?.ministerioFoto}
-                                            className="w-10 h-10 rounded-full object-cover"
-                                            width={100}
-                                            height={100}
-                                        />
-                                        <span>{i?.ministerioNome}</span>
-                                        </div>
                                     </td>
 
                                     <td className="py-4 px-4">
