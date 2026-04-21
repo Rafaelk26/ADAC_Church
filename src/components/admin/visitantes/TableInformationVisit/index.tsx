@@ -59,8 +59,9 @@ export function TableInformationVisit(){
 
         
         <>  
-            <div className={`${styles.customScroll} w-full max-h-[320px] overflow-y-auto pr-2`}>
-                <table className="w-full mt-5">
+            <div className={`${styles.customScroll} max-w-sm w-full max-h-[320px] overflow-y-auto overflow-x-auto pr-2
+            md:max-w-full`}>
+                <table className="w-4xl mt-5 md:w-full">
                     <thead>
                         <tr className="bg-[#090909] text-left">
                         <th className="py-4 px-4 text-base font-light font-montserrat text-gray-300 rounded-tl-2xl">

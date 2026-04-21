@@ -38,9 +38,9 @@ export function Header() {
       {/* MENU MOBILE */}
       <div
         className={`
-          absolute top-16 left-0 w-full bg-[#090909]/95 backdrop-blur-md
+          absolute top-16 left-0 w-full h-screen bg-[#090909]/70 backdrop-blur-md
           flex flex-col items-center gap-6 py-6
-          transition-all duration-300 z-40
+          transition-all duration-300 z-50
           ${open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5 pointer-events-none"}
         `}
       >

@@ -7,15 +7,13 @@ import { MdOutlineModeEdit } from "react-icons/md";
 
 import fotoBannerEvent from "../../../../../public/assets/BANNER 3.png"
 
-export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento, descricaoEvento, fotoEvento}: 
+export function CardMinisters({id, nomeMinisterio, liderMinisterio, descricaoMinisterio, fotoMinisterio}: 
     { 
         id: string,
-        nomeEvento: string,
-        localEvento: string,
-        dataEvento: string,
-        horaEvento: string,
-        descricaoEvento?: string,
-        fotoEvento?: StaticImageData
+        nomeMinisterio: string,
+        liderMinisterio: string,
+        descricaoMinisterio?: string,
+        fotoMinisterio?: StaticImageData
     }){
 
     const [isEditOpen, setIsEditOpen] = useState(false);
@@ -39,7 +37,7 @@ export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento
     return(
         <div key={id} className="w-full rounded-lg py-8 px-6 bg-[#0a0a0a]/80">
             <h1 className="text-white font-montserrat text-2xl font-light">
-                Informações do Evento
+                Informações do Ministério
             </h1>
 
             <div className="w-full flex mt-4 gap-8">
@@ -48,48 +46,24 @@ export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento
                 <div className="w-full max-w-8/12 flex flex-col gap-4">
                     <div className="w-full">
                         <span className="text-white font-montserrat text-sm font-light">NOME</span>
-                        <h1 className="font-manrope font-semibold text-lg">{nomeEvento}</h1>
+                        <h1 className="font-manrope font-semibold text-lg">{nomeMinisterio}</h1>
                     </div>
 
                     <div className="w-full">
-                        <span className="text-white font-montserrat text-sm font-light">LOCALIZAÇÃO</span>
-                        <h1 className="font-manrope font-semibold text-lg">{localEvento}</h1>
-                    </div>
-
-                    <div className="w-full flex gap-4">
-                        <div className="w-full">
-                                <span className="text-white font-montserrat text-sm font-light">DATA</span>
-                                <h1 className="font-manrope font-semibold text-lg">{dataEvento}</h1>
-                        </div>
-                        <div className="w-full">
-                            <span className="text-white font-montserrat text-sm font-light">HORA</span>
-                            <h1 className="font-manrope font-semibold text-lg">{horaEvento}</h1>
-                        </div>
+                        <span className="text-white font-montserrat text-sm font-light">LÍDER</span>
+                        <h1 className="font-manrope font-semibold text-lg">{liderMinisterio}</h1>
                     </div>
 
                     <div className="w-full">
                         <span className="text-white font-montserrat text-sm font-light">DESCRIÇÃO</span>
-                        <p className="font-manrope font-light text-lg">{descricaoEvento}</p>
-                    </div>
-                </div>
-
-                {/* CAPA/BUTTON */}
-                <div className="w-full max-w-4/12 flex flex-col justify-between gap-7">
-                    <div className="flex flex-col gap-2">
-                        <span className="text-white font-montserrat text-sm font-light">CAPA</span>
-                        
-                        <Image 
-                        className="w-full rounded-xl"
-                        alt={`${nomeEvento}`}
-                        src={fotoEvento || fotoBannerEvent}
-                        />
+                        <p className="font-manrope font-light text-lg">{descricaoMinisterio}</p>
                     </div>
 
-                    <div className="flex flex-col items-end gap-4">
+                    <div className="flex gap-4 mt-4">
                         <button
                         onClick={() => setIsEditOpen(true)}
                         className="
-                        bg-yellow-600 text-white text-sm flex items-center justify-center w-32
+                        bg-yellow-600 text-white text-sm flex items-center justify-center w-30
                         font-medium font-manrope py-2 px-4 rounded-md transition-all
                         hover:bg-yellow-700 hover:scale-105 hover:cursor-pointer
                         ">
@@ -101,13 +75,26 @@ export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento
                         <button
                         onClick={() => setIsDeleteOpen(true)}
                         className="
-                        bg-red-600 text-white text-sm flex items-center justify-center w-32
+                        bg-red-600 text-white text-sm flex items-center justify-center w-30
                         font-medium font-manrope py-2 px-4 rounded-md transition-all
                         hover:bg-red-700 hover:scale-105 hover:cursor-pointer
                         ">
                             <IoMdTrash className="mr-2" />
                             Deletar
                         </button>
+                    </div>
+                </div>
+
+                {/* CAPA/BUTTON */}
+                <div className="w-full max-w-4/12 flex flex-col justify-between gap-7">
+                    <div className="flex flex-col gap-2">
+                        <span className="text-white font-montserrat text-sm font-light">CAPA</span>
+                        
+                        <Image 
+                        className="rounded-xl h-56 w-full object-cover"
+                        alt={`${nomeMinisterio}`}
+                        src={fotoMinisterio || fotoBannerEvent}
+                        />
                     </div>
 
 
@@ -116,20 +103,20 @@ export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento
                     {isEditOpen && (
                         <div className="fixed inset-0 bg-black/70 z-50 h-screen flex items-center justify-center">
                             <div className="bg-[#0a0a0a] p-6 rounded-xl w-full max-w-sm md:max-w-lg">
-                                <h2 className="text-white text-xl mb-4">Editar Evento</h2>
+                                <h2 className="text-white text-xl mb-4">Editar Ministério</h2>
 
                                 <label className="cursor-pointer group relative block">
 
                                 <Image
-                                    src={previewEdit || fotoEvento || fotoBannerEvent}
-                                    alt="Foto do evento"
+                                    src={previewEdit || fotoMinisterio || fotoBannerEvent}
+                                    alt="Foto do ministério"
                                     className="w-full h-40 object-cover rounded mb-4"
                                     width={1000}
                                     height={1000}
                                 />
 
                                 {/* BOTÃO DE REMOVER */}
-                                {(previewEdit || fotoEvento) && (
+                                {(previewEdit || fotoMinisterio) && (
                                     <button
                                     type="button"
                                     onClick={(e) => {
@@ -156,30 +143,21 @@ export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento
 
                                 <input
                                     className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    placeholder="Nome do evento"
-                                    defaultValue={nomeEvento}
+                                    placeholder="Nome do ministerio"
+                                    defaultValue={nomeMinisterio}
                                 />
+
 
                                 <input
                                     className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    placeholder="Local"
-                                    defaultValue={localEvento}
+                                    placeholder="Líder do ministerio"
+                                    defaultValue={liderMinisterio}
                                 />
 
-                                <div className="flex gap-2">
-                                    <input
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    defaultValue={dataEvento}
-                                    />
-                                    <input
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    defaultValue={horaEvento}
-                                    />
-                                </div>
 
                                 <textarea
                                     className="w-full mb-4 p-2 rounded bg-[#1a1a1a] text-white"
-                                    defaultValue={descricaoEvento}
+                                    defaultValue={descricaoMinisterio}
                                 />
 
                                 <div className="flex justify-end gap-3">
@@ -208,7 +186,7 @@ export function CardEventos({id, nomeEvento, localEvento, dataEvento, horaEvento
                             md:max-w-lg">
 
                             <h2 className="text-white text-xl mb-4">
-                                Tem certeza que deseja excluir esse evento?
+                                Tem certeza que deseja excluir esse ministério?
                             </h2>
 
                             <p className="text-gray-400 mb-6">

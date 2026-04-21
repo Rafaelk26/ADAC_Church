@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { fetchAllCelulas } from "@/functions/fetchAllCelulas";
-import { fetchAllMinisters } from "@/functions/fetchAllMinisters";
+import { fetchAllCelulas } from "@/functions/GET/fetchAllCelulas";
+import { fetchAllMinisters } from "@/functions/GET/fetchAllMinisters";
 
 
 export default function Test() {

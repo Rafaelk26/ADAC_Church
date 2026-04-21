@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
-import { TableInformationVisit } from "@/components/admin/visitantes/TableInformationVisit";
+import { TableInformation } from "@/components/admin/home/TableInformation";
 
 import foto from "../../../../public/assets/backgroundAdmin.png"
 
-export default function Visitantes(){
+export default function Trabalhadores(){
     return(
         <section className="relative h-full w-full overflow-visible">
             <div className="relative z-50">
@@ -15,13 +15,13 @@ export default function Visitantes(){
             <Image
                 alt="Foto de fundo"
                 src={foto}
-                className="absolute inset-0 w-full h-screen object-cover opacity-65 z-10 md:opacity-85"
+                className="absolute inset-0 w-full h-max object-cover opacity-65 z-10 md:opacity-85"
             />
 
             <div className="relative z-20 flex h-full w-full items-start justify-center px-6 pt-20">
                 <div className="max-w-7xl w-full">
                     <h1 className="text-3xl md:text-4xl font-manrope font-bold text-white">
-                        Visitantes Interessados
+                        Trabalhadores
                     </h1>
                 </div>
             </div>
@@ -33,9 +33,9 @@ export default function Visitantes(){
                     <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">8</h1>
                 </div>    
 
-                {/* TABLE INFORMATION OF VISIT */}
+                {/* TABLE INFORMATION OF WORK */}
                 <div className="max-w-7xl w-full flex mt-4">
-                    <TableInformationVisit />
+                    <TableInformation />
                 </div>            
             </div>
 
