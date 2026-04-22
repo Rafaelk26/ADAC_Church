@@ -1,0 +1,12 @@
+.customScroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.customScroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 20px;
+}
+
+.customScroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.6);
+}

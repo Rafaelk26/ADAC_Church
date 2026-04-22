@@ -11,11 +11,11 @@ import foto from "../../../../public/assets/BANNER 1.png";
 
 
 
-export function CellCard({fotoCelula, nomeCelula, faixaCelula, bairroCelula, nomeLider, generoCelula}: 
+export function CellCard({fotoCelula, nomeCelula, faixaCelula, bairroCelula, liderCelula, generoCelula}: 
     {
         fotoCelula?: StaticImageData; nomeCelula: string; 
         faixaCelula: string; bairroCelula: string; 
-        generoCelula: string; nomeLider: string;
+        generoCelula: string; liderCelula: string;
     }
 ) {
     return (
@@ -82,7 +82,7 @@ export function CellCard({fotoCelula, nomeCelula, faixaCelula, bairroCelula, nom
                         <div className="w-full absolute top-3/5 left-4 mt-6 -translate-y-1/2 z-2">
                             <div className="w-full">
                                 <h1 className="w-full absolute top-3/5 mt-7 -translate-y-1/2 text-white font-manrope font-light text-md">
-                                    {nomeLider}
+                                    {liderCelula}
                                 </h1>
                             </div>
                         </div>

@@ -1,9 +1,10 @@
-export function Select({ children }: { children: React.ReactNode }) {
+export function Select({ children, ...rest }: React.SelectHTMLAttributes<HTMLSelectElement> & { children: React.ReactNode }) {
     return(
         <>
             <div className="w-full relative group">
                 <select
-                className="w-full bg-gray-400/10 p-3 rounded-md 
+                {...rest}
+                className="w-full bg-[#1a1a1a] p-3 rounded-md 
                 border-2 border-gray-500 font-manrope transition-all
                 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                 appearance-none pr-10"

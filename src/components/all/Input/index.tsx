@@ -1,4 +1,5 @@
-export function Input({ type, placeholder }: { type: string; placeholder?: string }) {
+export function Input({ type, placeholder, ...rest }: React.InputHTMLAttributes<HTMLInputElement>
+    & { type: string; placeholder?: string; } & React.InputHTMLAttributes<HTMLInputElement>) {
     return(
         <>
             <input 

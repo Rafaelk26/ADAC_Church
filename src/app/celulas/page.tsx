@@ -2,15 +2,18 @@
 
 import Image from "next/image";
 import { useState } from "react";
+
 import { Header } from "@/components/all/Header";
+import { Footer } from "@/components/all/Footer";
 import { Input } from "@/components/all/Input";
 import { Select } from "@/components/all/Select";
 import { Wrapper } from "@/components/all/Wrapper";
 import { CellCard } from "@/components/celulas/CellCard";
 import { Main } from "@/components/celulas/Main";
-import styles from './styles.module.css'
+
+import styles from "./styles.module.css";
+
 import foto from "../../../public/assets/BANNER 2.png";
-import { Footer } from "@/components/all/Footer";
 
 export default function Celulas() {
 
@@ -24,7 +27,7 @@ export default function Celulas() {
         bairroCelula: "Gaviotas",
         faixaCelula: "18-40 Anos",
         generoCelula: "Masculino",
-        nomeLider: "Líder X",
+        liderCelula: "Líder X",
         fotoCelula: foto,
     }));
 
