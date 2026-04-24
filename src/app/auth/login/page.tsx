@@ -50,6 +50,7 @@ export default function Login() {
                 className="w-full p-3 rounded bg-[#1a1a1a] text-white"
                 placeholder="Usuário"
                 name="usuario"
+                autoComplete="username"
             />
 
             <div className="w-full relative">
@@ -58,6 +59,7 @@ export default function Login() {
                     className="w-full p-3 rounded bg-[#1a1a1a] text-white"
                     placeholder="Senha"
                     name="senha"
+                    autoComplete="current-password"
                 />
 
                 {showPassword ? (

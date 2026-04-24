@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 import { Geist, Geist_Mono, Montserrat, Manrope } from "next/font/google";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -40,7 +42,23 @@ export default function RootLayout({
       lang="pt-br"
       className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} ${montserrat.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        
+        {children}
+        <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 5000,
+          style: {
+            background: "#1b1b1b",
+            color: "#fff",
+            borderRadius: "10px",
+            padding: "10px 15px",
+            fontFamily: "var(--font-manrope)",
+          }
+        }}
+        />
+      </body>
     </html>
   );
 }
