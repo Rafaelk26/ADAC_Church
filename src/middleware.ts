@@ -3,8 +3,6 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 export function middleware(req: NextRequest) {
-  
-  console.log("MIDLEWARE RODANDO...");
 
   const token = req.cookies.get("token")?.value;
 
