@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image"
 import { Header } from "@/components/all/Header"
 import { Footer } from "@/components/all/Footer"
@@ -39,35 +41,35 @@ export default function AdminHome(){
                     
                     {/* CARDS */}
                     <div className={`${styles.customScroll} w-full flex gap-4 overflow-x-auto p-1`}>
-                       <CardInformation
-                       nome="Trabalhadores" 
-                       numeros={2}
-                       legenda="Pessoas interessadas em trabalhar em ministério da igreja."
-                       link="/admin/trabalhadores" />
+                    <CardInformation
+                    nome="Trabalhadores" 
+                    numeros={2}
+                    legenda="Pessoas interessadas em trabalhar em ministério da igreja."
+                    link="/admin/trabalhadores" />
 
-                       <CardInformation
-                       nome="Eventos Ativos" 
-                       numeros={3}
-                       legenda="Eventos que estão aberto ao público para ser frequentado."
-                       link="/admin/eventos" />
+                    <CardInformation
+                    nome="Eventos Ativos" 
+                    numeros={3}
+                    legenda="Eventos que estão aberto ao público para ser frequentado."
+                    link="/admin/eventos" />
 
-                       <CardInformation
-                       nome="Células Ativas"
-                       numeros={218}
-                       legenda="Células abertas para novos membros participarem."
-                       link="/admin/celulas" />
+                    <CardInformation
+                    nome="Células Ativas"
+                    numeros={218}
+                    legenda="Células abertas para novos membros participarem."
+                    link="/admin/celulas" />
 
-                       <CardInformation
-                       nome="Visitantes Interessados" 
-                       numeros={12}
-                       legenda="Pessoas interessadas em fazer uma visita na igreja."
-                       link="/admin/visitantes" />
+                    <CardInformation
+                    nome="Visitantes Interessados" 
+                    numeros={12}
+                    legenda="Pessoas interessadas em fazer uma visita na igreja."
+                    link="/admin/visitantes" />
 
-                       <CardInformation
-                       nome="Ministérios Abertos" 
-                       numeros={12}
-                       legenda="Ministérios abertos para servir ao Senhor com excelência."
-                       link="/admin/ministerios" />
+                    <CardInformation
+                    nome="Ministérios Abertos" 
+                    numeros={12}
+                    legenda="Ministérios abertos para servir ao Senhor com excelência."
+                    link="/admin/ministerios" />
                     </div>
 
 
@@ -79,7 +81,7 @@ export default function AdminHome(){
                     </div>
                 </div>
                 <Footer />
-            </section>
+            </section>"
         </>
     )
 }

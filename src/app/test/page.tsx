@@ -18,5 +18,18 @@ export default function Test() {
     fetchAllVisitantes();
   }, []);
 
+  useEffect(() => {
+
+    function sigIn() {
+        fetch("/api/register", {
+          method: "POST",
+          body: JSON.stringify({ email: "rafaelk262002@gmail.com", senha: "R@fa2611" }),
+      })
+    }
+
+    sigIn();
+    
+  }, []);
+
   return <div>Testando Supabase...</div>;
 }

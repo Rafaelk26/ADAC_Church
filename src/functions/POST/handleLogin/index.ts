@@ -1,14 +1,16 @@
-import toast from "react-hot-toast";
+export async function handleLogin(usuario: string, senha: string) {
+  try {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ email: usuario, senha }),
+    });
 
-export function handleLogin(usuario: string, senha: string): boolean {
-    try{
-        console.log("Login attempt:", { usuario, senha });
-        toast.success("Login successful!");
-        return true;
-    }
-    catch(error){
-        console.error("Login error:", error);
-        toast.error("Falha no login, por favor tente mais tarde.");
-        return false;
-    }
+    if (!res.ok) throw new Error("Erro no login");
+
+    return true;
+
+  } catch (err: any) {
+    console.error(err);
+    return false;
+  }
 }

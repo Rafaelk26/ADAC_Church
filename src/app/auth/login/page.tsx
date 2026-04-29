@@ -80,6 +80,7 @@ export default function Login() {
             <a href="/auth/reset" className="w-max underline hover:text-blue-400 transition-all">Esqueceu a senha?</a>
 
             <button
+            type="submit"
             className="mt-4 px-4 py-3 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
             >
             Entrar
