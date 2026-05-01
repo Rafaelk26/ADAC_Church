@@ -5,7 +5,7 @@ import { TableInformationVisit } from "@/components/admin/visitantes/TableInform
 
 import foto from "../../../../public/assets/backgroundAdmin.png"
 
-export default function VisitantesClient(){
+export function VisitantesClient(){
     return(
         <section className="relative h-full w-full overflow-visible">
             <div className="relative z-50">

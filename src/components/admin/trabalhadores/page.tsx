@@ -5,7 +5,7 @@ import { TableInformation } from "@/components/admin/home/TableInformation";
 
 import foto from "../../../../public/assets/backgroundAdmin.png"
 
-export default async function TrabalhadoresClient(){
+export async function TrabalhadoresClient(){
     return(
         <>
             <section className="relative h-full w-full overflow-visible">

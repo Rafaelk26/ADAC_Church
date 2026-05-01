@@ -12,7 +12,7 @@ import foto from "../../../../public/assets/backgroundAdmin.png";
 import fotoBannerEventData from "../../../../public/assets/BANNER 2.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
 
-export default function EventosClient(){
+export function EventosClient(){
     
     const [isNewEventOpen, setIsNewEventOpen] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getUserFromCookie } from "@/lib/auth/auth";
-import VisitantesClient from "@/components/admin/visitantes/page";
+import { VisitantesClient } from "@/components/admin/visitantes/page";
 
 export default async function Visitantes(){
 

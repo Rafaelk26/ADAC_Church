@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 
 import foto from "../../../../public/assets/backgroundAdmin.png"
 
-export default async function AdminHomeClient(){
+export async function AdminHomeClient(){
     return(
         <>
             <section className="relative h-full w-full overflow-visible">
