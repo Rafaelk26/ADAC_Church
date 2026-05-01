@@ -1,92 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { z } from "zod";
 import { FaPlus } from "react-icons/fa6";
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { Input } from "@/components/all/Input";
 import { Select } from "@/components/all/Select";
 import { TableInformationCell } from "@/components/admin/celulas/TableInformationCell";
+import { handleNewCelula } from "@/functions/POST/handleNewCelula";
+import { fetchAllCelulas } from "@/functions/GET/fetchAllCelulas";
+
+import { Celula } from "@/types/types";
 
 import styles from "./styles.module.css";
 
 import foto from "../../../../public/assets/backgroundAdmin.png";
-import fotoBannerEventData from "../../../../public/assets/BANNER 2.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
+
+
+export const celulaSchema = z.object({
+    nomeCelula: z.string().min(1, "Nome obrigatório"),
+    liderCelula: z.string().min(1, "Líder obrigatório"),
+    bairroCelula: z.string().min(1),
+    diaCelula: z.string().min(1),
+    horaCelula: z.string().min(1),
+    generoCelula: z.string().min(1),
+    faixaCelula: z.string().min(1),
+
+    fotoCelula: z
+        .instanceof(File)
+        .optional()
+        .refine((file) => !file || file.size < 25_000_000, "Máx 25MB")
+        .refine(
+        (file) =>
+            !file ||
+            ["image/jpeg", "image/png", "image/webp", "image/heic"].includes(file.type),
+        "Formato inválido"
+        ),
+});
+
+export type CelulaFormData = z.infer<typeof celulaSchema>;
 
 export function CelulasClient(){
     
+    const [cells, setCells] = useState<Celula[]>([]);
     const [isNewEventOpen, setIsNewEventOpen] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
     const [search, setSearch] = useState("");
     const [bairro, setBairro] = useState("");
     const [genero, setGenero] = useState("");
+    
+    // State de envio
+    const [dataCellForm, setDataCellForm] = useState<Partial<CelulaFormData>>({});
+    
+    const celulasFiltradas = cells.filter((c) => {
+        const matchNome = c.nomeCelula.toLowerCase().includes(search.toLowerCase());
+        const matchBairro = bairro ? c.bairroCelula === bairro : true;
+        const matchGenero = genero ? c.generoCelula === genero : true;
 
-    const celulas = [
-        {
-            id: "1",
-            nomeCelula: "Célula X",
-            liderCelula: "Líder X",
-            bairroCelula: "Barranco Alto",
-            diaCelula: "Segunda-feira",
-            horaCelula: "19:00",
-            generoCelula: "Feminina",
-            faixaCelula: "05-10",
-            fotoCelula: fotoBannerEventData,
-        },
-        {
-            id: "2",
-            nomeCelula: "Célula Y",
-            liderCelula: "Líder Y",
-            bairroCelula: "Benfica",
-            diaCelula: "Quinta-feira",
-            horaCelula: "20:00",
-            generoCelula: "Masculino",
-            faixaCelula: "11-17",
-            fotoCelula: fotoBannerEventData,
-        },
-        {
-            id: "3",
-            nomeCelula: "Célula Z",
-            liderCelula: "Líder Z",
-            bairroCelula: "Morro do Algodão",
-            diaCelula: "Sexta-feira",
-            horaCelula: "18:30",
-            generoCelula: "Feminina",
-            faixaCelula: "18-40",
-            fotoCelula: fotoBannerEventData,
-        },
-        {
-            id: "4",
-            nomeCelula: "Célula A",
-            liderCelula: "Líder A",
-            bairroCelula: "Rio do Ouro",
-            diaCelula: "Terça-feira",
-            horaCelula: "19:30",
-            generoCelula: "Kids",
-            faixaCelula: "05-10",
-            fotoCelula: fotoBannerEventData,
-        },
-        {
-            id: "5",
-            nomeCelula: "Célula B",
-            liderCelula: "Líder B",
-            bairroCelula: "Centro",
-            diaCelula: "Sábado",
-            horaCelula: "10:00",
-            generoCelula: "Feminina",
-            faixaCelula: "18-40",
-            fotoCelula: fotoBannerEventData,
-        }
-    ];
+        return matchNome && matchBairro && matchGenero;
+    });
+
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+        const { name, value } = e.target;
+
+        setDataCellForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
 
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
 
         if (file) {
-            const url = URL.createObjectURL(file);
-            setPreview(url);
+            setPreview(URL.createObjectURL(file));
+
+            setDataCellForm((prev) => ({
+            ...prev,
+            fotoCelula: file,
+            }));
         }
     }
 
@@ -94,13 +90,11 @@ export function CelulasClient(){
         setPreview(null);
     }
 
-    const celulasFiltradas = celulas.filter((c) => {
-        const matchNome = c.nomeCelula.toLowerCase().includes(search.toLowerCase());
-        const matchBairro = bairro ? c.bairroCelula === bairro : true;
-        const matchGenero = genero ? c.generoCelula === genero : true;
-
-        return matchNome && matchBairro && matchGenero;
+    useEffect(() => {
+        fetchAllCelulas().then((data) => {
+        setCells(data || []);
     });
+    }, []);
     
     return(
 
@@ -233,7 +227,15 @@ export function CelulasClient(){
                     
                         <h2 className="text-white text-xl mb-4">Nova Célula</h2>
 
-                        <label className="cursor-pointer group relative block">
+                        <form 
+                        method="post" 
+                        className="w-full"
+                        onSubmit={async(e)=> {
+                            e.preventDefault();
+                            await handleNewCelula(dataCellForm as CelulaFormData);
+                            setIsNewEventOpen(false);
+                        }}>
+                            <label className="cursor-pointer group relative block">
                             <Image
                                 src={preview || uploadImage}
                                 alt="Foto da célula"
@@ -263,7 +265,8 @@ export function CelulasClient(){
                             <input
                                 type="file"
                                 className="hidden"
-                                onChange={handleImageChange}
+                                onChange={(e) => handleImageChange(e)}
+                                name="fotoCelula"
                             />
                             </label>
 
@@ -274,27 +277,35 @@ export function CelulasClient(){
                                 className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
                                 placeholder:text-white"
                                 placeholder="Nome da célula"
+                                name="nomeCelula"
+                                onChange={handleChange}
                             />
                             <input
                                 type="text"
                                 className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
                                 placeholder:text-white"
                                 placeholder="Líder da célula"
+                                name="liderCelula"
+                                onChange={handleChange}
                             />
                         </div>
 
 
                         <div className="flex gap-2">
-                            <Select>
+                            <Select 
+                            name="diaCelula"
+                            onChange={handleChange}>
                                 <option value="">Selecione o dia</option>
-                                <option value="segunda">Segunda-feira</option>
-                                <option value="terca">Terça-feira</option>
-                                <option value="quinta">Quinta-feira</option>
-                                <option value="sexta">Sexta-feira</option>
-                                <option value="sabado">Sábado</option>
+                                <option value="Segunda-feira">Segunda-feira</option>
+                                <option value="Terça-feira">Terça-feira</option>
+                                <option value="Quinta-feira">Quinta-feira</option>
+                                <option value="Sexta-feira">Sexta-feira</option>
+                                <option value="Sábado">Sábado</option>
                             </Select>
 
-                            <Select>
+                            <Select 
+                            name="bairroCelula"
+                            onChange={handleChange}>
                                 <option value="">Selecione o bairro</option>
                                 <option value="Barranco Alto">Barranco Alto</option>
                                 <option value="Benfica">Benfica</option>
@@ -351,7 +362,9 @@ export function CelulasClient(){
 
 
                         <div className="flex gap-2 mt-4">
-                            <Select>
+                            <Select 
+                            name="generoCelula"
+                            onChange={handleChange}>
                                 <option value="">Gênero da célula</option>
                                 <option value="Masculino">Masculino</option>
                                 <option value="Feminina">Feminina</option>
@@ -362,7 +375,9 @@ export function CelulasClient(){
                                 <option value="Par">Par</option>
                             </Select>
 
-                            <Select>
+                            <Select 
+                            name="faixaCelula"
+                            onChange={handleChange}>
                                 <option value="">Faixa etária da célula</option>
                                 <option value="05-10">05-10 Anos</option>
                                 <option value="11-17">11-17 Anos</option>
@@ -372,6 +387,8 @@ export function CelulasClient(){
                         </div>
 
                         <input
+                            onChange={handleChange}
+                            name="horaCelula"
                             type="time"
                             required
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
@@ -387,11 +404,13 @@ export function CelulasClient(){
                             </button>
 
                             <button
+                            type="submit"
                             className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
                             >
                             Criar Célula
                             </button>
                         </div>
+                        </form>
                     </div>
                 </div>
             )}

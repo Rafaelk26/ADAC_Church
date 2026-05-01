@@ -1,19 +1,16 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { ImManWoman } from "react-icons/im";
 import { TbWomanFilled } from "react-icons/tb";
 import { IoIosWoman } from "react-icons/io";
 import { GiSwordwoman } from "react-icons/gi";
 import { IoMdMan } from "react-icons/io";
 
-import foto from "../../../../public/assets/BANNER 1.png";
-
-
-
+import foto from "../../../../public/assets/bgCellCard.png";
 
 
 export function CellCard({fotoCelula, nomeCelula, faixaCelula, bairroCelula, liderCelula, generoCelula}: 
     {
-        fotoCelula?: StaticImageData; nomeCelula: string; 
+        fotoCelula?: string; nomeCelula: string; 
         faixaCelula: string; bairroCelula: string; 
         generoCelula: string; liderCelula: string;
     }
@@ -24,11 +21,12 @@ export function CellCard({fotoCelula, nomeCelula, faixaCelula, bairroCelula, lid
                 <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#090909] to-90% z-1" />
                 
                         <Image
-                          className="w-full h-full object-cover"
-                          alt={"Nome da célula"}
-                          src={fotoCelula ? fotoCelula : foto}
-                          width={500}
-                          height={500}
+                            key={fotoCelula}
+                            src={fotoCelula || foto}
+                            alt="Nome da célula"
+                            width={500}
+                            height={500}
+                            className="w-full h-full object-cover"
                         />
                 
                         <h1 className="absolute top-3/5 left-4 -mt-1 -translate-y-1/2 text-white font-manrope font-semibold text-3xl z-2">

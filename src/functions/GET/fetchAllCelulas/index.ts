@@ -5,5 +5,5 @@ export async function fetchAllCelulas() {
     .from("celulas")
     .select("*");
 
-    console.log("DATA CÉLULAS:", data);
+    return data;
 }

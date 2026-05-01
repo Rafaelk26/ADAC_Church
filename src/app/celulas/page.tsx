@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
@@ -11,25 +11,21 @@ import { Wrapper } from "@/components/all/Wrapper";
 import { CellCard } from "@/components/celulas/CellCard";
 import { Main } from "@/components/celulas/Main";
 
+import { Celula } from "@/types/types";
+
+import { fetchAllCelulas } from "@/functions/GET/fetchAllCelulas";
+
 import styles from "./styles.module.css";
 
 import foto from "../../../public/assets/BANNER 2.png";
 
 export default function Celulas() {
-
-    const itemsPerPage = 9;
-    const [currentPage, setCurrentPage] = useState(1);
-
-    // simulação dos dados
-    const cells = Array.from({ length: 10 }).map((_, i) => ({
-        id: i,
-        nomeCelula: "Célula X",
-        bairroCelula: "Gaviotas",
-        faixaCelula: "18-40 Anos",
-        generoCelula: "Masculino",
-        liderCelula: "Líder X",
-        fotoCelula: foto,
-    }));
+  
+  const itemsPerPage = 9;
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const [cells, setCells] = useState<Celula[]>([]);
+  const [mounted, setMounted] = useState(false);
 
     const totalPages = Math.ceil(cells.length / itemsPerPage);
 
@@ -37,6 +33,18 @@ export default function Celulas() {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
+
+    // Buscando células da API
+
+    useEffect(() => {
+      setMounted(true);
+
+      fetchAllCelulas().then((data) => {
+        setCells(data || []);
+      });
+    }, []);
+
+    if (!mounted) return null;
 
   return (
     <>
