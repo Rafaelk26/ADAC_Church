@@ -3,9 +3,20 @@
 import { useState } from "react";
 import Image from "next/image";
 import ADACLogo from "../../../../public/assets/LogoAdac.svg";
+import { usePathname, useRouter } from "next/navigation";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isAdminRoute = pathname.startsWith("/admin");
+
+  async function handleLogout() {
+    await fetch("/api/logout", { method: "POST" });
+    router.push("/auth/login");
+  }
 
   return (
     <header className="relative w-full h-16 bg-transparent text-white flex items-center justify-center z-50">
@@ -15,15 +26,31 @@ export function Header() {
         <Image src={ADACLogo} alt="ADAC Church" width={180} height={180} />
 
         {/* MENU DESKTOP */}
-        <nav className="hidden md:flex gap-6">
-          <a href="/ministerios" className="text-sm font-montserrat hover:text-blue-400 transition-colors">MINISTÉRIOS</a>
-          <a href="/celulas" className="text-sm font-montserrat hover:text-blue-400 transition-colors">CÉLULAS</a>
-          <a href="/#visit" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PLANEJAR VISITA</a>
-          <a href="/#programation" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PROGRAMAÇÃO</a>
-          <a href="/about" className="text-sm font-montserrat hover:text-blue-400 transition-colors">QUEM SOMOS</a>
-          <a href="/eventos" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
-          <a href="/auth/login" className="text-sm font-montserrat hover:text-blue-400 transition-colors">ÁREA DO USUÁRIO</a>
-        </nav>
+        {isAdminRoute ? (
+          <>
+            <nav className="hidden md:flex gap-6">
+              <a href="/admin/home" className="text-sm font-montserrat hover:text-blue-400 transition-colors">HOME ADMIN</a>
+              <a href="/admin/trabalhadores" className="text-sm font-montserrat hover:text-blue-400 transition-colors">TRABALHADORES</a>
+              <a href="/admin/ministerios" className="text-sm font-montserrat hover:text-blue-400 transition-colors">MINISTÉRIOS</a>
+              <a href="/admin/celulas" className="text-sm font-montserrat hover:text-blue-400 transition-colors">CÉLULAS</a>
+              <a href="/admin/eventos" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
+              <a href="/admin/visitantes" className="text-sm font-montserrat hover:text-blue-400 transition-colors">VISITANTES</a>
+              <a href="/auth/login" onClick={()=> handleLogout()} className="text-sm font-montserrat hover:text-red-400 transition-colors">SAIR</a>
+            </nav>
+          </>
+        ):(
+          <>
+            <nav className="hidden md:flex gap-6">
+              <a href="/ministerios" className="text-sm font-montserrat hover:text-blue-400 transition-colors">MINISTÉRIOS</a>
+              <a href="/celulas" className="text-sm font-montserrat hover:text-blue-400 transition-colors">CÉLULAS</a>
+              <a href="/#visit" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PLANEJAR VISITA</a>
+              <a href="/#programation" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PROGRAMAÇÃO</a>
+              <a href="/about" className="text-sm font-montserrat hover:text-blue-400 transition-colors">QUEM SOMOS</a>
+              <a href="/eventos" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
+              <a href="/auth/login" className="text-sm font-montserrat hover:text-blue-400 transition-colors">ÁREA DO USUÁRIO</a>
+            </nav>
+          </>
+        )}
 
         {/* BOTÃO HAMBURGUER */}
         <button
@@ -45,13 +72,30 @@ export function Header() {
           ${open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5 pointer-events-none"}
         `}
       >
-        <a onClick={() => setOpen(false)} href="/ministerios">MINISTÉRIOS</a>
-        <a onClick={() => setOpen(false)} href="/celulas">CÉLULAS</a>
-        <a onClick={() => setOpen(false)} href="/#visit">PLANEJAR VISITA</a>
-        <a onClick={() => setOpen(false)} href="/#programation">PROGRAMAÇÃO</a>
-        <a onClick={() => setOpen(false)} href="/about">QUEM SOMOS</a>
-        <a onClick={() => setOpen(false)} href="/eventos">EVENTOS</a>
-        <a onClick={() => setOpen(false)} href="/auth/login">ÁREA DO USUÁRIO</a>
+        {isAdminRoute ? (
+          <>
+            <a onClick={() => setOpen(false)} href="/admin/home">HOME ADMIN</a>
+            <a onClick={() => setOpen(false)} href="/admin/trabalhadores">TRABALHADORES</a>
+            <a onClick={() => setOpen(false)} href="/admin/ministerios">MINISTÉRIOS</a>
+            <a onClick={() => setOpen(false)} href="/admin/celulas">CÉLULAS</a>
+            <a onClick={() => setOpen(false)} href="/admin/eventos">EVENTOS</a>
+            <a onClick={() => setOpen(false)} href="/admin/visitantes">VISITANTES</a>
+            <a onClick={() => {
+              setOpen(false);
+              handleLogout();
+            }} href="/auth/login">SAIR</a>
+          </>
+        ):(
+          <>
+            <a onClick={() => setOpen(false)} href="/ministerios">MINISTÉRIOS</a>
+            <a onClick={() => setOpen(false)} href="/celulas">CÉLULAS</a>
+            <a onClick={() => setOpen(false)} href="/#visit">PLANEJAR VISITA</a>
+            <a onClick={() => setOpen(false)} href="/#programation">PROGRAMAÇÃO</a>
+            <a onClick={() => setOpen(false)} href="/about">QUEM SOMOS</a>
+            <a onClick={() => setOpen(false)} href="/eventos">EVENTOS</a>
+            <a onClick={() => setOpen(false)} href="/auth/login">ÁREA DO USUÁRIO</a>
+          </>
+        )}
       </div>
     </header>
   );
