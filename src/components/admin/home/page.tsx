@@ -78,7 +78,7 @@ export async function AdminHomeClient(){
                     </div>
                 </div>
                 <Footer />
-            </section>"
+            </section>
         </>
     )
 }

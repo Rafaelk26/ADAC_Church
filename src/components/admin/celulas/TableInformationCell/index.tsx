@@ -4,30 +4,51 @@ import Image from "next/image";
 import { useState } from "react";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdTrash } from "react-icons/io";
+import { Select } from "@/components/all/Select";
+import { handleUpdateCelula } from "@/functions/PUT/handleUpdateCelula";
+import { CelulaFormData } from "../page";
+import { handleDeleteCell } from "@/functions/DELETE/handleDeleteCell";
+import { Celula } from "@/types/types";
 
 import styles from "./styles.module.css";
 import banner from "../../../../../public/assets/BANNER 3.png"
-import { Select } from "@/components/all/Select";
 
-export function TableInformationCell({ celulas }: { celulas: any[] }) {
+export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], setCelulas: any }) {
 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [previewEdit, setPreviewEdit] = useState<string | null>(null);
-    const [selectedCell, setSelectedCell] = useState<any>(null);
+    const [selectedCell, setSelectedCell] = useState<Celula | null>(null);
+
+    // State de envio
+    const [dataCellForm, setDataCellForm] = useState<Partial<CelulaFormData>>({});
 
 
-    function handleEditImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0];
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+        const { name, value } = e.target;
 
-        if (file) {
-            const url = URL.createObjectURL(file);
-            setPreviewEdit(url);
-        }
+        setDataCellForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     }
 
     function handleRemoveEditImage() {
         setPreviewEdit(null);
+        
+    }
+
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+
+        if (file) {
+            setPreviewEdit(URL.createObjectURL(file));
+
+            setDataCellForm((prev) => ({
+            ...prev,
+            fotoCelula: file,
+            }));
+        }
     }
 
     return(
@@ -69,7 +90,7 @@ export function TableInformationCell({ celulas }: { celulas: any[] }) {
                         </tr>
                     </thead>
 
-                    <tbody  className={`${styles.customScroll}`}>
+                    <tbody className={`${styles.customScroll}`}>
                         {celulas.length === 0 ? ( 
                         <>
                             <tr className="bg-[#1a1a1a]">
@@ -80,7 +101,7 @@ export function TableInformationCell({ celulas }: { celulas: any[] }) {
                         </>
                         ) : (
                         <>
-                            {celulas.map((c)=> (
+                            {celulas.map((c) => (
                                 <tr key={c.id} className="odd:bg-[#1a1a1a]/60 even:bg-[#121212]/60">
                                     <td className="py-4 px-4">
                                         {c?.nomeCelula}
@@ -118,6 +139,16 @@ export function TableInformationCell({ celulas }: { celulas: any[] }) {
                                             setSelectedCell(c);
                                             setIsEditOpen(true);
                                             setPreviewEdit(null);
+                                            setDataCellForm({
+                                                nomeCelula: c.nomeCelula,
+                                                liderCelula: c.liderCelula,
+                                                bairroCelula: c.bairroCelula,
+                                                diaCelula: c.diaCelula,
+                                                horaCelula: c.horaCelula,
+                                                generoCelula: c.generoCelula,
+                                                faixaCelula: c.faixaCelula,
+                                                fotoCelulaUrl: c.fotoCelula,
+                                            });
                                             }}
                                             className="
                                             bg-yellow-600 text-white text-sm flex items-center justify-center
@@ -129,7 +160,10 @@ export function TableInformationCell({ celulas }: { celulas: any[] }) {
                     
                     
                                             <button
-                                            onClick={() => setIsDeleteOpen(true)}
+                                            onClick={() => {
+                                                setSelectedCell(c)
+                                                setIsDeleteOpen(true)
+                                            }}
                                             className="
                                             bg-red-600 text-white text-sm flex items-center justify-center
                                             font-medium font-manrope px-3 py-2 rounded-md whitespace-nowrap
@@ -152,170 +186,213 @@ export function TableInformationCell({ celulas }: { celulas: any[] }) {
                         <div className="bg-[#0a0a0a] p-6 rounded-xl w-full max-w-sm md:max-w-lg">
                             <h2 className="text-white text-xl mb-4">Editar Célula</h2>
 
-                            <label className="cursor-pointer group relative block">
+                            <form 
+                            method="put" 
+                            className="w-full"
+                            onSubmit={async (e) => {
+                                e.preventDefault();
 
-                            <Image
-                                src={previewEdit || selectedCell?.fotoCelula || banner}
-                                alt="Foto da célula"
-                                className="w-full h-40 object-cover rounded mb-4"
-                                width={1000}
-                                height={1000}
-                            />
+                                if(selectedCell?.id){
+                                    const res = await handleUpdateCelula(selectedCell?.id, dataCellForm as CelulaFormData);
 
-                            {/* BOTÃO DE REMOVER */}
-                            {(previewEdit || selectedCell?.fotoCelula) && (
-                                <button
-                                type="button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleRemoveEditImage();
-                                }}
-                                className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700 transition"
-                                >
-                                Remover
-                                </button>
-                            )}
+                                    if (res?.data) {
+                                    setCelulas((prev: Celula[]) =>
+                                    prev.map((c) =>
+                                        c.id === selectedCell?.id ? res.data : c
+                                    )
+                                    );
+                                }
 
-                            {/* OVERLAY */}
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
-                                <span className="text-white text-sm">Alterar imagem</span>
-                            </div>
+                                setIsEditOpen(false);
+                                }
 
-                            <input
-                                type="file"
-                                className="hidden"
-                                onChange={handleEditImageChange}
-                            />
+
+                                
+                            }}>
+                            <label htmlFor="fileInput" className="cursor-pointer group relative block">
+
+                                <Image
+                                    src={previewEdit || selectedCell?.fotoCelula || banner}
+                                    alt="Foto da célula"
+                                    className="w-full h-40 object-cover rounded mb-4"
+                                    width={1000}
+                                    height={1000}
+                                />
+
+                                {/* BOTÃO DE REMOVER */}
+                                {(previewEdit || selectedCell?.fotoCelula) && (
+                                    <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleRemoveEditImage();
+                                    }}
+                                    className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700 transition"
+                                    >
+                                    Remover
+                                    </button>
+                                )}
+
+                                {/* OVERLAY */}
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition pointer-events-none">
+                                    <span className="text-white text-sm">Alterar imagem</span>
+                                </div>
+
+                                <input
+                                    id="fileInput"
+                                    type="file"
+                                    className="hidden"
+                                    onChange={handleImageChange}
+                                />
                             </label>
 
 
-                            <div className="flex gap-2">
+                                <div className="flex gap-2">
+                                    <input
+                                        className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
+                                        placeholder="Nome da célula"
+                                        name="nomeCelula"
+                                        defaultValue={selectedCell?.nomeCelula}
+                                        onChange={handleChange}
+                                    />
+
+
+                                    <input
+                                        className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
+                                        placeholder="Líder da célula"
+                                        name="liderCelula"
+                                        defaultValue={selectedCell?.liderCelula}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                
+
+                                <div className="flex gap-2">
+                                    <Select
+                                    name="diaCelula" 
+                                    defaultValue={selectedCell?.diaCelula} 
+                                    onChange={handleChange}>
+                                        <option value="">Selecione o dia</option>
+                                        <option value="Segunda-feira">Segunda-feira</option>
+                                        <option value="Terça-feira">Terça-feira</option>
+                                        <option value="Quinta-feira">Quinta-feira</option>
+                                        <option value="Sexta-feira">Sexta-feira</option>
+                                        <option value="Sábado">Sábado</option>
+                                    </Select>
+
+                                    <Select 
+                                    name="bairroCelula"
+                                    defaultValue={selectedCell?.bairroCelula} 
+                                    onChange={handleChange}>
+                                        <option value="">Selecione o bairro</option>
+                                        <option value="Barranco Alto">Barranco Alto</option>
+                                        <option value="Benfica">Benfica</option>
+                                        <option value="Cantagalo">Cantagalo</option>
+                                        <option value="Capricórnio I">Capricórnio I</option>
+                                        <option value="Capricórnio II">Capricórnio II</option>
+                                        <option value="Capricórnio III">Capricórnio III</option>
+                                        <option value="Caputera">Caputera</option>
+                                        <option value="Centro">Centro</option>
+                                        <option value="Cidade Jardim">Cidade Jardim</option>
+                                        <option value="Estrela D' Alva">Estrela D' Alva</option>
+                                        <option value="Getuba">Getuba</option>
+                                        <option value="Golfinho">Golfinho</option>
+                                        <option value="Indaiá">Indaiá</option>
+                                        <option value="Ipiranga">Ipiranga</option>
+                                        <option value="Jaraguá">Jaraguá</option>
+                                        <option value="Jaraguazinho">Jaraguazinho</option>
+                                        <option value="Jardim Aruan">Jardim Aruan</option>
+                                        <option value="Jardim Britânia">Jardim Britânia</option>
+                                        <option value="Jardim Califórnia">Jardim Califórnia</option>
+                                        <option value="Jardim Casa Branca">Jardim Casa Branca</option>
+                                        <option value="Jardim Flecheiras">Jardim Flecheiras</option>
+                                        <option value="Jardim Gaivotas">Jardim Gaivotas</option>
+                                        <option value="Jardim Jaqueira">Jardim Jaqueira</option>
+                                        <option value="Jardim Mariella">Jardim Mariella</option>
+                                        <option value="Jardim Olaria">Jardim Olaria</option>
+                                        <option value="Jardim Primavera">Jardim Primavera</option>
+                                        <option value="Jardim Rio Claro">Jardim Rio Claro</option>
+                                        <option value="Jardim Rio Santos">Jardim Rio Santos</option>
+                                        <option value="Jardim Tarumãs">Jardim Tarumãs</option>
+                                        <option value="Jardim Terralão">Jardim Terralão</option>
+                                        <option value="Martim de Sá">Martim de Sá</option>
+                                        <option value="Massaguaçu">Massaguaçu</option>
+                                        <option value="Morro do Algodão">Morro do Algodão</option>
+                                        <option value="Nova Caraguá I">Nova Caraguá I</option>
+                                        <option value="Nova Caraguá II">Nova Caraguá II</option>
+                                        <option value="Pegorelli">Pegorelli</option>
+                                        <option value="Perequê Mirim">Perequê Mirim</option>
+                                        <option value="Poiares">Poiares</option>
+                                        <option value="Pontal Santa Marina">Pontal Santa Marina</option>
+                                        <option value="Porto Novo">Porto Novo</option>
+                                        <option value="Praia da Cocanha">Praia da Cocanha</option>
+                                        <option value="Praia da Mococa">Praia da Mococa</option>
+                                        <option value="Praia das Palmeiras">Praia das Palmeiras</option>
+                                        <option value="Prainha">Prainha</option>
+                                        <option value="Rio do Ouro">Rio do Ouro</option>
+                                        <option value="Sumaré">Sumaré</option>
+                                        <option value="Tabatinga">Tabatinga</option>
+                                        <option value="Tinga">Tinga</option>
+                                        <option value="Travessão">Travessão</option>
+                                        <option value="Vila Ponte Seca">Vila Ponte Seca</option>
+                                    </Select>
+                                </div>
+
+
+                                <div className="flex gap-2 mt-4">
+                                    <Select 
+                                    name="generoCelula"
+                                    defaultValue={selectedCell?.generoCelula} 
+                                    onChange={handleChange}>
+                                        <option value="">Gênero da célula</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Feminina">Feminina</option>
+                                        <option value="Kids">Kids</option>
+                                        <option value="Adolescente">Adolescente</option>
+                                        <option value="Casal">Casal</option>
+                                        <option value="Mista">Mista</option>
+                                        <option value="Par">Par</option>
+                                    </Select>
+
+                                    <Select 
+                                    name="faixaCelula"
+                                    defaultValue={selectedCell?.faixaCelula} 
+                                    onChange={handleChange}>
+                                        <option value="">Faixa etária da célula</option>
+                                        <option value="05-10">05-10 Anos</option>
+                                        <option value="11-17">11-17 Anos</option>
+                                        <option value="18-40">18-40 Anos</option>
+                                        <option value="+40">+40 Anos</option>
+                                    </Select>
+                                </div>
+
                                 <input
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    placeholder="Nome da célula"
-                                    defaultValue={selectedCell?.nomeCelula}
+                                    name="horaCelula"
+                                    defaultValue={selectedCell?.horaCelula}
+                                    onChange={handleChange}
+                                    type="time"
+                                    required
+                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
+                                    placeholder="Hora"
                                 />
 
 
-                                <input
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    placeholder="Líder da célula"
-                                    defaultValue={selectedCell?.liderCelula}
-                                />
-                            </div>
+                                <div className="flex justify-end gap-3">
+                                    <button
+                                    onClick={() => setIsEditOpen(false)}
+                                    className="px-4 py-2 bg-gray-600 rounded hover:cursor-pointer hover:bg-gray-700 hover:scale-105 transition-all"
+                                    >
+                                    Cancelar
+                                    </button>
 
-                            
-
-                            <div className="flex gap-2">
-                                <Select defaultValue={selectedCell?.diaCelula}>
-                                    <option value="">Selecione o dia</option>
-                                    <option value="Segunda-feira">Segunda-feira</option>
-                                    <option value="Terça-feira">Terça-feira</option>
-                                    <option value="Quinta-feira">Quinta-feira</option>
-                                    <option value="Sexta-feira">Sexta-feira</option>
-                                    <option value="Sábado">Sábado</option>
-                                </Select>
-
-                                <Select defaultValue={selectedCell?.bairroCelula}>
-                                    <option value="">Selecione o bairro</option>
-                                    <option value="Barranco Alto">Barranco Alto</option>
-                                    <option value="Benfica">Benfica</option>
-                                    <option value="Cantagalo">Cantagalo</option>
-                                    <option value="Capricórnio I">Capricórnio I</option>
-                                    <option value="Capricórnio II">Capricórnio II</option>
-                                    <option value="Capricórnio III">Capricórnio III</option>
-                                    <option value="Caputera">Caputera</option>
-                                    <option value="Centro">Centro</option>
-                                    <option value="Cidade Jardim">Cidade Jardim</option>
-                                    <option value="Estrela D' Alva">Estrela D' Alva</option>
-                                    <option value="Getuba">Getuba</option>
-                                    <option value="Golfinho">Golfinho</option>
-                                    <option value="Indaiá">Indaiá</option>
-                                    <option value="Ipiranga">Ipiranga</option>
-                                    <option value="Jaraguá">Jaraguá</option>
-                                    <option value="Jaraguazinho">Jaraguazinho</option>
-                                    <option value="Jardim Aruan">Jardim Aruan</option>
-                                    <option value="Jardim Britânia">Jardim Britânia</option>
-                                    <option value="Jardim Califórnia">Jardim Califórnia</option>
-                                    <option value="Jardim Casa Branca">Jardim Casa Branca</option>
-                                    <option value="Jardim Flecheiras">Jardim Flecheiras</option>
-                                    <option value="Jardim Gaivotas">Jardim Gaivotas</option>
-                                    <option value="Jardim Jaqueira">Jardim Jaqueira</option>
-                                    <option value="Jardim Mariella">Jardim Mariella</option>
-                                    <option value="Jardim Olaria">Jardim Olaria</option>
-                                    <option value="Jardim Primavera">Jardim Primavera</option>
-                                    <option value="Jardim Rio Claro">Jardim Rio Claro</option>
-                                    <option value="Jardim Rio Santos">Jardim Rio Santos</option>
-                                    <option value="Jardim Tarumãs">Jardim Tarumãs</option>
-                                    <option value="Jardim Terralão">Jardim Terralão</option>
-                                    <option value="Martim de Sá">Martim de Sá</option>
-                                    <option value="Massaguaçu">Massaguaçu</option>
-                                    <option value="Morro do Algodão">Morro do Algodão</option>
-                                    <option value="Nova Caraguá I">Nova Caraguá I</option>
-                                    <option value="Nova Caraguá II">Nova Caraguá II</option>
-                                    <option value="Pegorelli">Pegorelli</option>
-                                    <option value="Perequê Mirim">Perequê Mirim</option>
-                                    <option value="Poiares">Poiares</option>
-                                    <option value="Pontal Santa Marina">Pontal Santa Marina</option>
-                                    <option value="Porto Novo">Porto Novo</option>
-                                    <option value="Praia da Cocanha">Praia da Cocanha</option>
-                                    <option value="Praia da Mococa">Praia da Mococa</option>
-                                    <option value="Praia das Palmeiras">Praia das Palmeiras</option>
-                                    <option value="Prainha">Prainha</option>
-                                    <option value="Rio do Ouro">Rio do Ouro</option>
-                                    <option value="Sumaré">Sumaré</option>
-                                    <option value="Tabatinga">Tabatinga</option>
-                                    <option value="Tinga">Tinga</option>
-                                    <option value="Travessão">Travessão</option>
-                                    <option value="Vila Ponte Seca">Vila Ponte Seca</option>
-                                </Select>
-                            </div>
-
-
-                            <div className="flex gap-2 mt-4">
-                                <Select defaultValue={selectedCell?.generoCelula}>
-                                    <option value="">Gênero da célula</option>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Feminina">Feminina</option>
-                                    <option value="Kids">Kids</option>
-                                    <option value="Adolescente">Adolescente</option>
-                                    <option value="Casal">Casal</option>
-                                    <option value="Mista">Mista</option>
-                                    <option value="Par">Par</option>
-                                </Select>
-
-                                <Select defaultValue={selectedCell?.faixaCelula}>
-                                    <option value="">Faixa etária da célula</option>
-                                    <option value="05-10">05-10 Anos</option>
-                                    <option value="11-17">11-17 Anos</option>
-                                    <option value="18-40">18-40 Anos</option>
-                                    <option value="+40">+40 Anos</option>
-                                </Select>
-                            </div>
-
-                            <input
-                                defaultValue={selectedCell?.horaCelula}
-                                type="time"
-                                required
-                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
-                                placeholder="Hora"
-                            />
-
-
-                            <div className="flex justify-end gap-3">
-                                <button
-                                onClick={() => setIsEditOpen(false)}
-                                className="px-4 py-2 bg-gray-600 rounded hover:cursor-pointer hover:bg-gray-700 hover:scale-105 transition-all"
-                                >
-                                Cancelar
-                                </button>
-
-                                <button
-                                className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
-                                >
-                                Salvar Célula
-                                </button>
-                            </div>
+                                    <button
+                                    className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
+                                    >
+                                    Salvar Célula
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 )}
@@ -344,6 +421,22 @@ export function TableInformationCell({ celulas }: { celulas: any[] }) {
                             </button>
 
                             <button
+                            onClick={async () => {
+                                if (!selectedCell?.id) {
+                                    console.error("ID inválido:", selectedCell);
+                                    return;
+                                }
+
+                                const ok = await handleDeleteCell(selectedCell?.id);
+
+                                if (ok) {
+                                    setCelulas((prev: Celula[]) =>
+                                    prev.filter((c) => c.id !== selectedCell.id)
+                                    );
+                                    setIsDeleteOpen(false);
+                                    setSelectedCell(null);
+                                }
+                            }}
                             className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 hover:cursor-pointer hover:scale-105 transition-all"
                             >
                             Confirmar

@@ -1,9 +1,15 @@
 import { supabaseServer } from "@/lib/supabase/server";
+import { Celula } from "@/types/types";
 
-export async function fetchAllCelulas() {
-    const { data } = await supabaseServer
+export async function fetchAllCelulas(): Promise<Celula[]> {
+  const { data, error } = await supabaseServer
     .from("celulas")
     .select("*");
 
-    return data;
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data ?? [];
 }

@@ -39,9 +39,13 @@ export const celulaSchema = z.object({
             ["image/jpeg", "image/png", "image/webp", "image/heic"].includes(file.type),
         "Formato inválido"
         ),
+
+    fotoCelulaUrl: z.string().nullable().optional(),
 });
 
 export type CelulaFormData = z.infer<typeof celulaSchema>;
+
+export const celulaUpdateSchema = celulaSchema.partial();
 
 export function CelulasClient(){
     
@@ -56,13 +60,20 @@ export function CelulasClient(){
     const [dataCellForm, setDataCellForm] = useState<Partial<CelulaFormData>>({});
     
     const celulasFiltradas = cells.filter((c) => {
-        const matchNome = c.nomeCelula.toLowerCase().includes(search.toLowerCase());
-        const matchBairro = bairro ? c.bairroCelula === bairro : true;
-        const matchGenero = genero ? c.generoCelula === genero : true;
+        if (!c) return false;
+
+        const nome = c.nomeCelula || "";
+        const bairroC = c.bairroCelula || "";
+        const generoC = c.generoCelula || "";
+
+        const searchNormalized = search.trim().toLowerCase();
+
+        const matchNome = nome.toLowerCase().includes(searchNormalized);
+        const matchBairro = bairro ? bairroC === bairro : true;
+        const matchGenero = genero ? generoC === genero : true;
 
         return matchNome && matchBairro && matchGenero;
     });
-
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
@@ -92,7 +103,8 @@ export function CelulasClient(){
 
     useEffect(() => {
         fetchAllCelulas().then((data) => {
-        setCells(data || []);
+        console.log(data)
+        setCells(Array.isArray(data) ? data : data || []);
     });
     }, []);
     
@@ -213,13 +225,13 @@ export function CelulasClient(){
 
                 {/* EVENT CARD'S */}
                 <div className={`${styles.customScroll} max-w-7xl max-h-[620px] overflow-y-auto w-full mt-6`}>
-                    <TableInformationCell celulas={celulasFiltradas} />
+                    <TableInformationCell celulas={celulasFiltradas} setCelulas={setCells} />
                 </div>            
             </div>
 
             <Footer />
 
-            {/* MODAL NEW EVENT */}
+            {/* MODAL NEW CELL */}
 
             {isNewEventOpen && (
                 <div className="fixed inset-0 bg-black/70 h-screen z-50 flex items-center justify-center">
@@ -230,10 +242,18 @@ export function CelulasClient(){
                         <form 
                         method="post" 
                         className="w-full"
-                        onSubmit={async(e)=> {
-                            e.preventDefault();
-                            await handleNewCelula(dataCellForm as CelulaFormData);
-                            setIsNewEventOpen(false);
+                        onSubmit={async (e) => {
+                        e.preventDefault();
+
+                        const newCell = await handleNewCelula(dataCellForm as CelulaFormData);
+
+                        if (newCell?.data) {
+                            setCells((prev) => [newCell.data, ...prev]);
+                        }
+
+                        setIsNewEventOpen(false);
+                        setDataCellForm({});
+                        setPreview(null);
                         }}>
                             <label className="cursor-pointer group relative block">
                             <Image
