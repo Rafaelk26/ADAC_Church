@@ -5,5 +5,5 @@ export async function fetchAllMinisters() {
     .from("ministerios")
     .select("*");
 
-    console.log("DATA MINISTÉRIOS:", data);
+    return data;
 }

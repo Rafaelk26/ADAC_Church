@@ -1,64 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa6";
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { CardMinisters } from "@/components/admin/ministerios/CardMinisters";
+import { fetchAllMinisters } from "@/functions/GET/fetchAllMinisters";
+import { Ministerio } from "@/types/types";
 
-import fotoBannerEventData from "../../../../public/assets/BANNER 2.png";
 import styles from "./styles.module.css";
+import fotoBannerEventData from "../../../../public/assets/BANNER 2.png";
 import foto from "../../../../public/assets/backgroundAdmin.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
+import { handleNewMinisterio } from "@/functions/POST/handleNewMinisterio";
 
 export function MinisteriosClient() {
   const [isNewEventOpen, setIsNewEventOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    nomeMinisterio: "",
+    liderMinisterio: "",
+    descricaoMinisterio: "",
+    statusMinisterio: true,
+    fotoMinisterio: null as File | null
+  });
 
-  const ministerios = [
-        {
-            id: "1",
-            nomeMinisterio: "CINE ADAC",
-            liderMinisterio: "ADAC Church",
-            descricaoMinisterio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-            fotoMinisterio: fotoBannerEventData,
-        },
-        {
-            id: "2",
-            nomeMinisterio: "CURSO DE LÍDERES",
-            liderMinisterio: "ADAC Church",
-            descricaoMinisterio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-            fotoMinisterio: fotoBannerEventData,
-        },
-        {
-            id: "3",
-            nomeMinisterio: "NOITE DE ADORAÇÃO",
-            liderMinisterio: "ADAC Church",
-            descricaoMinisterio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-            fotoMinisterio: fotoBannerEventData,
-        },
-        {
-            id: "4",
-            nomeMinisterio: "VIGÍLIA",
-            liderMinisterio: "ADAC Church",
-            descricaoMinisterio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-            fotoMinisterio: fotoBannerEventData,
-        },
-    ];
+  const [ ministerios, setMinisterios ] = useState<Ministerio[]>([]);
 
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
 
         if (file) {
-            const url = URL.createObjectURL(file);
-            setPreview(url);
+            setForm((prev) => ({ ...prev, foto: file }));
+            setPreview(URL.createObjectURL(file));
         }
     }
 
     function handleRemoveImage() {
         setPreview(null);
     }
+
+
+    // Carrega e insere no state "setMinisterios" os ministerios do banco resgatados
+    useEffect(() => {
+        fetchAllMinisters().then((data) => {
+        setMinisterios(Array.isArray(data) ? data : []);
+    });
+    }, []);
 
     return (
         <section className="relative h-full w-full overflow-visible">
@@ -103,11 +92,8 @@ export function MinisteriosClient() {
                     {ministerios.map((ministerio) => (
                         <CardMinisters
                             key={ministerio.id}
-                            id={ministerio.id}
-                            nomeMinisterio={ministerio.nomeMinisterio}
-                            liderMinisterio={ministerio.liderMinisterio}
-                            descricaoMinisterio={ministerio.descricaoMinisterio}
-                            fotoMinisterio={ministerio.fotoMinisterio}
+                            {...ministerio}
+                            setMinisterios={setMinisterios}
                         />
                     ))}
                 </div>            
@@ -159,6 +145,9 @@ export function MinisteriosClient() {
 
 
                         <input
+                            name="nomeMinisterio"
+                            value={form.nomeMinisterio}
+                            onChange={(e) => setForm({ ...form, nomeMinisterio: e.target.value })}
                             type="text"
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
                             placeholder:text-white"
@@ -166,6 +155,9 @@ export function MinisteriosClient() {
                         />
 
                         <input
+                            name="liderMinisterio"
+                            value={form.liderMinisterio}
+                            onChange={(e) => setForm({ ...form, liderMinisterio: e.target.value })}
                             type="text"
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white
                             placeholder:text-white"
@@ -174,6 +166,9 @@ export function MinisteriosClient() {
 
 
                         <textarea
+                            name="descricaoMinisterio"
+                            value={form.descricaoMinisterio}
+                            onChange={(e) => setForm({ ...form, descricaoMinisterio: e.target.value })}
                             className="w-full mb-4 p-2 rounded bg-[#1a1a1a] text-white
                             placeholder:text-white"
                             placeholder="Descrição do ministério"
@@ -188,6 +183,22 @@ export function MinisteriosClient() {
                             </button>
 
                             <button
+                            onClick={async () => {
+                                const res = await handleNewMinisterio(form);
+
+                                if (res?.data) {
+                                setMinisterios((prev) => [res.data, ...prev]);
+                                setIsNewEventOpen(false);
+                                setForm({
+                                    nomeMinisterio: "",
+                                    liderMinisterio: "",
+                                    descricaoMinisterio: "",
+                                    statusMinisterio: true,
+                                    fotoMinisterio: null
+                                });
+                                setPreview(null);
+                                }
+                            }}
                             className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
                             >
                             Criar Ministério

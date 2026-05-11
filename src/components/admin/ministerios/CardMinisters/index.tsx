@@ -1,24 +1,56 @@
 "use client";
 
 import { useState } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { IoMdTrash } from "react-icons/io";
 import { MdOutlineModeEdit } from "react-icons/md";
+import { handleUpdateMinisterio } from "@/functions/PUT/handleUpdateMinisterio";
+import { handleNewMinisterio } from "@/functions/POST/handleNewMinisterio";
 
 import fotoBannerEvent from "../../../../../public/assets/BANNER 3.png"
+import { Ministerio } from "@/types/types";
 
-export function CardMinisters({id, nomeMinisterio, liderMinisterio, descricaoMinisterio, fotoMinisterio}: 
-    { 
-        id: string,
-        nomeMinisterio: string,
-        liderMinisterio: string,
-        descricaoMinisterio?: string,
-        fotoMinisterio?: StaticImageData
-    }){
+export function CardMinisters({
+  id,
+  nomeMinisterio,
+  liderMinisterio,
+  descricaoMinisterio,
+  fotoMinisterio,
+  statusMinisterio,
+  setMinisterios
+}: Ministerio & { setMinisterios: React.Dispatch<React.SetStateAction<Ministerio[]>> }) {
 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [previewEdit, setPreviewEdit] = useState<string | null>(null);
+    const [form, setForm] = useState({
+        nomeMinisterio,
+        liderMinisterio,
+        descricaoMinisterio,
+        statusMinisterio
+    });
+
+    function handleInputChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
+        const { name, value } = e.currentTarget;
+
+        setForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
+
+    function handleCheckboxChange(
+    e: React.ChangeEvent<HTMLInputElement>
+    ) {
+        const { name, checked } = e.currentTarget;
+
+        setForm((prev) => ({
+            ...prev,
+            [name]: checked,
+        }));
+    }
 
     function handleEditImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
@@ -32,6 +64,34 @@ export function CardMinisters({id, nomeMinisterio, liderMinisterio, descricaoMin
     function handleRemoveEditImage() {
         setPreviewEdit(null);
     }
+
+    // const handleDelete = async () => {
+    //     if (!id) return;
+
+    //     const ok = await handleDeleteMinisterio(id);
+
+    //     if (ok) {
+    //         setMinisterios((prev: Ministerio[]) =>
+    //         prev.filter((m) => m.id !== id)
+    //         );
+    //         setIsDeleteOpen(false);
+    //     }
+    // };
+
+    const handleSave = async () => {
+
+        if(!id) return;
+
+        const res = await handleUpdateMinisterio(id, form);
+
+        if (res?.data) {
+            setMinisterios((prev: Ministerio[]) =>
+            prev.map((m) => (m.id === id ? res.data : m))
+            );
+
+            setIsEditOpen(false);
+        }
+    };
     
     
     return(
@@ -97,83 +157,130 @@ export function CardMinisters({id, nomeMinisterio, liderMinisterio, descricaoMin
                         />
                     </div>
 
+                    {/* STATUS */}
+                    <div className="w-full flex gap-2 items-center">
+                        <div className={`w-5 h-5 rounded-full border 
+                            ${statusMinisterio ? "bg-green-400" : "bg-red-500"}
+                        `}></div>
+
+                        <span className="text-sm text-red-300">Não aceita participantes</span>
+                    </div>
+
 
                     {/* MODAL EDIT */}
 
                     {isEditOpen && (
                         <div className="fixed inset-0 bg-black/70 z-50 h-screen flex items-center justify-center">
                             <div className="bg-[#0a0a0a] p-6 rounded-xl w-full max-w-sm md:max-w-lg">
+                                
+                                
                                 <h2 className="text-white text-xl mb-4">Editar Ministério</h2>
 
-                                <label className="cursor-pointer group relative block">
+                                <form
+                                onSubmit={async (e) => {
+                                    e.preventDefault();
 
-                                <Image
-                                    src={previewEdit || fotoMinisterio || fotoBannerEvent}
-                                    alt="Foto do ministério"
-                                    className="w-full h-40 object-cover rounded mb-4"
-                                    width={1000}
-                                    height={1000}
-                                />
+                                    if (!id) return;
 
-                                {/* BOTÃO DE REMOVER */}
-                                {(previewEdit || fotoMinisterio) && (
-                                    <button
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleRemoveEditImage();
-                                    }}
-                                    className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700 transition"
-                                    >
-                                    Remover
-                                    </button>
-                                )}
+                                    const res = await handleUpdateMinisterio(id, form);
 
-                                {/* OVERLAY */}
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
-                                    <span className="text-white text-sm">Alterar imagem</span>
-                                </div>
+                                    if (res?.data) {
+                                        setMinisterios((prev: Ministerio[]) =>
+                                            prev.map((m) => (m.id === id ? res.data : m))
+                                        );
+                                    }
+                                }}
+                                >
+                                    <label className="cursor-pointer group relative block">
 
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    onChange={handleEditImageChange}
-                                />
-                                </label>
+                                    <Image
+                                        src={fotoMinisterio || fotoBannerEvent}
+                                        alt="Foto do ministério"
+                                        className="w-full h-40 object-cover rounded mb-4"
+                                        width={1000}
+                                        height={1000}
+                                    />
 
-                                <input
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    placeholder="Nome do ministerio"
-                                    defaultValue={nomeMinisterio}
-                                />
+                                    {/* BOTÃO DE REMOVER */}
+                                    {(previewEdit || fotoMinisterio) && (
+                                        <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleRemoveEditImage();
+                                        }}
+                                        className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700 transition"
+                                        >
+                                        Remover
+                                        </button>
+                                    )}
+
+                                    {/* OVERLAY */}
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                                        <span className="text-white text-sm">Alterar imagem</span>
+                                    </div>
+
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        onChange={handleEditImageChange}
+                                    />
+                                    </label>
+
+                                    <input
+                                        name="nomeMinisterio"
+                                        className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
+                                        placeholder="Nome do ministerio"
+                                        value={form.nomeMinisterio}
+                                        onChange={handleInputChange}
+                                    />
 
 
-                                <input
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
-                                    placeholder="Líder do ministerio"
-                                    defaultValue={liderMinisterio}
-                                />
+                                    <input
+                                        name="liderMinisterio"
+                                        className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white"
+                                        placeholder="Líder do ministerio"
+                                        value={form.liderMinisterio}
+                                        onChange={handleInputChange}
+                                    />
 
 
-                                <textarea
-                                    className="w-full mb-4 p-2 rounded bg-[#1a1a1a] text-white"
-                                    defaultValue={descricaoMinisterio}
-                                />
+                                    <textarea
+                                        name="descricaoMinisterio"
+                                        value={form.descricaoMinisterio}
+                                        className="w-full mb-4 p-2 rounded bg-[#1a1a1a] text-white"
+                                        onChange={handleInputChange}
+                                    />
 
-                                <div className="flex justify-end gap-3">
-                                    <button
-                                    onClick={() => setIsEditOpen(false)}
-                                    className="px-4 py-2 bg-gray-600 rounded hover:cursor-pointer hover:bg-gray-700 hover:scale-105 transition-all"
-                                    >
-                                    Cancelar
-                                    </button>
+                                    <div className="flex justify-end gap-3">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                name="statusMinisterio"
+                                                checked={form.statusMinisterio}
+                                                onChange={handleCheckboxChange}
+                                            />
+                                            Ativo
+                                        </label>
+                                    </div>
 
-                                    <button
-                                    className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
-                                    >
-                                    Salvar
-                                    </button>
-                                </div>
+                                    <div className="flex justify-end gap-3">
+                                        <button
+                                        onClick={() => setIsEditOpen(false)}
+                                        className="px-4 py-2 bg-gray-600 rounded hover:cursor-pointer hover:bg-gray-700 hover:scale-105 transition-all"
+                                        >
+                                        Cancelar
+                                        </button>
+
+                                        <button
+                                        type="submit"
+                                        className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
+                                        >
+                                        Salvar
+                                        </button>
+                                    </div>
+                                </form>
+                                
                             </div>
                         </div>
                     )}
@@ -202,6 +309,7 @@ export function CardMinisters({id, nomeMinisterio, liderMinisterio, descricaoMin
                                 </button>
 
                                 <button
+                                onClick={()=> console.log("apagar")}
                                 className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 hover:cursor-pointer hover:scale-105 transition-all"
                                 >
                                 Confirmar
