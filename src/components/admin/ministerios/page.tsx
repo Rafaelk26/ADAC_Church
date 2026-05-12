@@ -7,13 +7,12 @@ import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { CardMinisters } from "@/components/admin/ministerios/CardMinisters";
 import { fetchAllMinisters } from "@/functions/GET/fetchAllMinisters";
+import { handleNewMinisterio } from "@/functions/POST/handleNewMinisterio";
 import { Ministerio } from "@/types/types";
 
 import styles from "./styles.module.css";
-import fotoBannerEventData from "../../../../public/assets/BANNER 2.png";
 import foto from "../../../../public/assets/backgroundAdmin.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
-import { handleNewMinisterio } from "@/functions/POST/handleNewMinisterio";
 
 export function MinisteriosClient() {
   const [isNewEventOpen, setIsNewEventOpen] = useState(false);
@@ -22,8 +21,8 @@ export function MinisteriosClient() {
     nomeMinisterio: "",
     liderMinisterio: "",
     descricaoMinisterio: "",
-    statusMinisterio: true,
-    fotoMinisterio: null as File | null
+    statusMinisterio: false,
+    fotoMinisterio: null as File | null 
   });
 
   const [ ministerios, setMinisterios ] = useState<Ministerio[]>([]);
@@ -32,13 +31,22 @@ export function MinisteriosClient() {
         const file = e.target.files?.[0];
 
         if (file) {
-            setForm((prev) => ({ ...prev, foto: file }));
             setPreview(URL.createObjectURL(file));
+
+            setForm((prev) => ({
+                ...prev,
+                fotoMinisterio: file,
+            }));
         }
     }
-
+    
     function handleRemoveImage() {
-        setPreview(null);
+    setPreview(null);
+
+    setForm((prev) => ({
+        ...prev,
+        fotoMinisterio: null
+    }));
     }
 
 
@@ -96,12 +104,20 @@ export function MinisteriosClient() {
                             setMinisterios={setMinisterios}
                         />
                     ))}
-                </div>            
+                </div> 
+
+                {ministerios.length === 0 && (
+                    <>
+                        <div className={`${styles.customScroll} max-w-full max-h-[200px] h-[200px] w-full grid grid-cols-1 mt-6 justify-center items-center`}>
+                            <span className="text-normal text-center font-montserrat md:text-xl">Não há ministério</span>
+                        </div>
+                    </>
+                )}           
             </div>
 
             <Footer />
 
-            {/* MODAL NEW EVENT */}
+            {/* MODAL NEW MINISTER */}
 
             {isNewEventOpen && (
                 <div className="fixed inset-0 bg-black/70 h-screen z-50 flex items-center justify-center">
@@ -137,6 +153,7 @@ export function MinisteriosClient() {
                             </div>
 
                             <input
+                                name="fotoMinisterio"
                                 type="file"
                                 className="hidden"
                                 onChange={handleImageChange}
@@ -193,7 +210,7 @@ export function MinisteriosClient() {
                                     nomeMinisterio: "",
                                     liderMinisterio: "",
                                     descricaoMinisterio: "",
-                                    statusMinisterio: true,
+                                    statusMinisterio: false,
                                     fotoMinisterio: null
                                 });
                                 setPreview(null);

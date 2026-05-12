@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { IoMdTrash } from "react-icons/io";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { handleUpdateMinisterio } from "@/functions/PUT/handleUpdateMinisterio";
-import { handleNewMinisterio } from "@/functions/POST/handleNewMinisterio";
 
 import fotoBannerEvent from "../../../../../public/assets/BANNER 3.png"
 import { Ministerio } from "@/types/types";
+import { handleDeleteMinisterio } from "@/functions/DELETE/handleDeleteMinisterio";
 
 export function CardMinisters({
   id,
@@ -27,8 +27,11 @@ export function CardMinisters({
         nomeMinisterio,
         liderMinisterio,
         descricaoMinisterio,
-        statusMinisterio
+        statusMinisterio,
+        fotoMinisterio
     });
+    const [isActive, setIsActive] = useState(form.statusMinisterio);
+    
 
     function handleInputChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -52,44 +55,67 @@ export function CardMinisters({
         }));
     }
 
+
     function handleEditImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
 
         if (file) {
-            const url = URL.createObjectURL(file);
-            setPreviewEdit(url);
+            setPreviewEdit(URL.createObjectURL(file));
+
+            setForm((prev) => ({
+                ...prev,
+                fotoMinisterio: file,
+            }));
         }
     }
 
     function handleRemoveEditImage() {
         setPreviewEdit(null);
+
+        setForm((prev) => ({
+            ...prev,
+            fotoMinisterio: null,
+        }));
     }
 
-    // const handleDelete = async () => {
-    //     if (!id) return;
 
-    //     const ok = await handleDeleteMinisterio(id);
+    function getImageSrc() {
+        if (previewEdit) return previewEdit;
 
-    //     if (ok) {
-    //         setMinisterios((prev: Ministerio[]) =>
-    //         prev.filter((m) => m.id !== id)
-    //         );
-    //         setIsDeleteOpen(false);
-    //     }
-    // };
+        if (form.fotoMinisterio instanceof File) {
+            return URL.createObjectURL(form.fotoMinisterio);
+        }
 
-    const handleSave = async () => {
+        if (typeof form.fotoMinisterio === "string") {
+            return form.fotoMinisterio;
+        }
 
-        if(!id) return;
+        return fotoBannerEvent;
+    }
 
-        const res = await handleUpdateMinisterio(id, form);
+    function handleToggle() {
+        setIsActive((prev) => {
+            const newValue = !prev;
 
-        if (res?.data) {
+            setForm((formPrev) => ({
+            ...formPrev,
+            statusMinisterio: newValue,
+            }));
+
+            return newValue;
+        });
+    }
+
+    const handleDelete = async () => {
+        if (!id) return;
+
+        const ok = await handleDeleteMinisterio(id);
+
+        if (ok) {
             setMinisterios((prev: Ministerio[]) =>
-            prev.map((m) => (m.id === id ? res.data : m))
+            prev.filter((m) => m.id !== id)
             );
-
-            setIsEditOpen(false);
+            setIsDeleteOpen(false);
         }
     };
     
@@ -151,9 +177,11 @@ export function CardMinisters({
                         <span className="text-white font-montserrat text-sm font-light">CAPA</span>
                         
                         <Image 
+                        width={1000}
+                        height={1000}
                         className="rounded-xl h-56 w-full object-cover"
                         alt={`${nomeMinisterio}`}
-                        src={fotoMinisterio || fotoBannerEvent}
+                        src={getImageSrc()}
                         />
                     </div>
 
@@ -163,7 +191,12 @@ export function CardMinisters({
                             ${statusMinisterio ? "bg-green-400" : "bg-red-500"}
                         `}></div>
 
-                        <span className="text-sm text-red-300">Não aceita participantes</span>
+                        {
+                            statusMinisterio ?
+                                <span className="text-sm text-green-300">Aceita participantes</span>
+                            :
+                                <span className="text-sm text-red-300">Não aceita participantes</span>
+                        }
                     </div>
 
 
@@ -189,12 +222,16 @@ export function CardMinisters({
                                             prev.map((m) => (m.id === id ? res.data : m))
                                         );
                                     }
+                                    setIsEditOpen(false);
                                 }}
                                 >
-                                    <label className="cursor-pointer group relative block">
+                                    <label
+                                        htmlFor={`file-${id}`}
+                                        className="cursor-pointer group relative block"
+                                    >
 
                                     <Image
-                                        src={fotoMinisterio || fotoBannerEvent}
+                                        src={getImageSrc()}
                                         alt="Foto do ministério"
                                         className="w-full h-40 object-cover rounded mb-4"
                                         width={1000}
@@ -221,6 +258,8 @@ export function CardMinisters({
                                     </div>
 
                                     <input
+                                        id={`file-${id}`}
+                                        name="fotoMinisterio"
                                         type="file"
                                         className="hidden"
                                         onChange={handleEditImageChange}
@@ -252,16 +291,26 @@ export function CardMinisters({
                                         onChange={handleInputChange}
                                     />
 
-                                    <div className="flex justify-end gap-3">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="statusMinisterio"
-                                                checked={form.statusMinisterio}
-                                                onChange={handleCheckboxChange}
+                                    <div className="flex justify-start items-center gap-3">
+                                        <button
+                                            type="button"
+                                            onClick={handleToggle}
+                                            className={`relative w-12 h-6 rounded-full transition-all ${
+                                            isActive ? "bg-green-900" : "bg-red-900"
+                                            }`}
+                                        >
+                                            <span
+                                            className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-all ${
+                                                isActive ? "translate-x-6" : "translate-x-0"
+                                            }`}
                                             />
-                                            Ativo
-                                        </label>
+                                        </button>
+
+                                        <span className={`text-sm font-medium ${
+                                            isActive ? "text-green-300" : "text-red-300"
+                                        }`}>
+                                            {isActive ? "Aceita participantes" : "Não aceita participantes"}
+                                        </span>
                                     </div>
 
                                     <div className="flex justify-end gap-3">
@@ -309,7 +358,7 @@ export function CardMinisters({
                                 </button>
 
                                 <button
-                                onClick={()=> console.log("apagar")}
+                                onClick={handleDelete}
                                 className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 hover:cursor-pointer hover:scale-105 transition-all"
                                 >
                                 Confirmar

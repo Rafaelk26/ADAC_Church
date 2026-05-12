@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export interface Celula {
     id?: string;
     nomeCelula: string;
@@ -19,7 +21,7 @@ export interface Ministerio {
     descricaoMinisterio: string;
     statusMinisterio: boolean;
     membrosMinisterio?: string[];
-    fotoMinisterio?: string;
+    fotoMinisterio?: string | File | StaticImageData | null;
     criado_em?: string;
 }
 

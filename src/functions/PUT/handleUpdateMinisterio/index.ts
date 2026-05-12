@@ -1,19 +1,22 @@
 import { supabaseServer } from "@/lib/supabase/server";
+import { Ministerio } from "@/types/types";
 import toast from "react-hot-toast";
 
-export async function handleUpdateMinisterio(id: string, data: any) {
+export async function handleUpdateMinisterio(id: string, data: Ministerio) {
   toast.loading("Atualizando...");
 
   try {
-    let imageUrl = data.fotoMinisterio;
+    let imageUrl: string | null = null;
 
-    // 📸 se tiver nova imagem
+    // se veio nova imagem
     if (data.fotoMinisterio instanceof File) {
-      const fileName = `ministerios/${Date.now()}-${data.fotoMinisterio.name}`;
+      const file = data.fotoMinisterio;
+
+      const fileName = `ministerios/${Date.now()}-${file.name}`;
 
       const { error: uploadError } = await supabaseServer.storage
         .from("ministerios")
-        .upload(fileName, data.fotoMinisterio);
+        .upload(fileName, file);
 
       if (uploadError) throw uploadError;
 
@@ -32,7 +35,12 @@ export async function handleUpdateMinisterio(id: string, data: any) {
         liderMinisterio: data.liderMinisterio,
         descricaoMinisterio: data.descricaoMinisterio,
         statusMinisterio: data.statusMinisterio,
-        fotoMinisterio: imageUrl,
+        fotoMinisterio:
+          imageUrl !== null
+            ? imageUrl
+            : typeof data.fotoMinisterio === "string"
+            ? data.fotoMinisterio
+            : null,
       })
       .eq("id", id)
       .select()
@@ -41,7 +49,7 @@ export async function handleUpdateMinisterio(id: string, data: any) {
     if (error) throw error;
 
     toast.dismiss();
-    toast.success("Atualizado!");
+    toast.success("Ministério tualizado!");
 
     return { success: true, data: updated };
   } catch (error) {

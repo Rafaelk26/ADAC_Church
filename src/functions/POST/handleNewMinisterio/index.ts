@@ -1,5 +1,4 @@
 import { supabaseServer } from "@/lib/supabase/server";
-import { Ministerio } from "@/types/types";
 import toast from "react-hot-toast";
 
 export async function handleNewMinisterio(data: any) {
@@ -8,9 +7,15 @@ export async function handleNewMinisterio(data: any) {
   try {
     let imageUrl: string | null = null;
 
+    if (!(data.fotoMinisterio instanceof File)) {
+      toast.error("Imagem inválida, escolha outra.");
+      console.log("Imagem inválida:", data.fotoMinisterio);
+    }
+
     // 📸 upload imagem
-    if (data.fotoMinisterio) {
+    if (data.fotoMinisterio instanceof File) {
       const file = data.fotoMinisterio;
+
       const fileName = `ministerios/${Date.now()}-${file.name}`;
 
       const { error: uploadError } = await supabaseServer.storage
