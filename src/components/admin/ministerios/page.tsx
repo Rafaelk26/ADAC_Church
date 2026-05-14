@@ -200,7 +200,8 @@ export function MinisteriosClient() {
                             </button>
 
                             <button
-                            onClick={async () => {
+                            onClick={
+                                async () => {
                                 const res = await handleNewMinisterio(form);
 
                                 if (res?.data) {

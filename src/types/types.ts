@@ -33,9 +33,10 @@ export interface Eventos {
     dataEvento: string;
     horaEvento: string;
     descricaoEvento: string;
-    fotoEvento?: string;
+    fotoEvento?: string | File | StaticImageData | null;
     criado_em?: string;
 }
+
 
 
 export interface Trabalhador {

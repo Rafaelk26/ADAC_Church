@@ -1,18 +1,45 @@
-import { redirect } from "next/navigation";
-import { getUserFromCookie } from "@/lib/auth/auth";
-import { EventosClient } from "@/components/admin/eventos/page";
+"use client";
 
-export default async function Eventos() {
+import Image from "next/image";
+import { Header } from "@/components/all/Header";
+import { Wrapper } from "@/components/all/Wrapper";
+import { Main } from "@/components/eventos/Main";
+import { BannerEvent } from "@/components/eventos/BannerEvent";
+import { Footer } from "@/components/all/Footer";
 
-    const user = await getUserFromCookie();
-  
-    if (!user) {
-      redirect("/auth/login");
-    }
-  
-    if (user.role !== "admin") {
-      redirect("/");
-    }
+import foto from "../../../public/assets/BANNER 3.png";
 
-  return <EventosClient />
+export default function Eventos() {
+
+  return (
+    <>
+      <section className="relative h-full w-full overflow-visible">
+        <Header />
+
+        <Image 
+        alt="Foto de fundo"
+        src={foto}
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-65
+        md:opacity-85"
+        />
+
+        <div className="absolute inset-0 bg-[#050505]/40 z-[1]" />
+        <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-b from-transparent to-[#050505] z-[2]" />
+
+        <Main />
+      </section>
+
+      <Wrapper>
+        <section className="w-full">
+
+            {/* CONTENT EVENTS */}
+            <main className="w-full mx-auto">
+              <BannerEvent />
+            </main>
+        </section>
+
+        <Footer />
+      </Wrapper>
+    </>
+  );
 }

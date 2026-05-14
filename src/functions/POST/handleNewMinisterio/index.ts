@@ -16,7 +16,8 @@ export async function handleNewMinisterio(data: any) {
     if (data.fotoMinisterio instanceof File) {
       const file = data.fotoMinisterio;
 
-      const fileName = `ministerios/${Date.now()}-${file.name}`;
+      const extension = file.name.split('.').pop();
+      const fileName = `eventos/${Date.now()}.${extension}`;
 
       const { error: uploadError } = await supabaseServer.storage
         .from("ministerios")

@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { IoMdTrash } from "react-icons/io";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { handleUpdateMinisterio } from "@/functions/PUT/handleUpdateMinisterio";
+import { handleDeleteMinisterio } from "@/functions/DELETE/handleDeleteMinisterio";
+import { Ministerio } from "@/types/types";
 
 import fotoBannerEvent from "../../../../../public/assets/BANNER 3.png"
-import { Ministerio } from "@/types/types";
-import { handleDeleteMinisterio } from "@/functions/DELETE/handleDeleteMinisterio";
 
 export function CardMinisters({
   id,
@@ -41,17 +41,6 @@ export function CardMinisters({
         setForm((prev) => ({
             ...prev,
             [name]: value,
-        }));
-    }
-
-    function handleCheckboxChange(
-    e: React.ChangeEvent<HTMLInputElement>
-    ) {
-        const { name, checked } = e.currentTarget;
-
-        setForm((prev) => ({
-            ...prev,
-            [name]: checked,
         }));
     }
 

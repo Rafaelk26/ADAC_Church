@@ -6,7 +6,7 @@ export async function handleDeleteMinisterio(id: string) {
   toast.loading("Deletando...");
 
   try {
-    // Buscar a célula
+    // Buscar o ministério
     const { data: cell, error: fetchError } = await supabaseServer
       .from("ministerios")
       .select("fotoMinisterio")
@@ -36,10 +36,12 @@ export async function handleDeleteMinisterio(id: string) {
 
     if (deleteError) throw deleteError;
 
+    toast.dismiss();
     toast.success("Ministério deletado com sucesso.")
     return true;
 
   } catch (e) {
+    toast.dismiss();
     toast.error("Erro ao deletar ministério.");
     console.error(e);
     return false;

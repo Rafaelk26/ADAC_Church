@@ -1,73 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa6";
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { CardEventos } from "@/components/admin/eventos/CardEvent";
+import { fetchAllEventos } from "@/functions/GET/fetchAllEventos";
+import { handleNewEvento } from "@/functions/POST/handleNewEvent";
+
+import { Eventos } from "@/types/types";
 
 import styles from "./styles.module.css";
 import foto from "../../../../public/assets/backgroundAdmin.png";
-import fotoBannerEventData from "../../../../public/assets/BANNER 2.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
 
 export function EventosClient(){
     
+    const [ eventos, setEventos ] = useState<Eventos[]>([]);
     const [isNewEventOpen, setIsNewEventOpen] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
-    
-    const eventos = [
-        {
-            id: "1",
-            nomeEvento: "CINE ADAC",
-            localEvento: "ADAC Church",
-            dataEvento: "08/04/2026",
-            horaEvento: "20:00",
-            descricaoEvento: "Lorem Ipsum is simply dummy text...",
-            fotoEvento: fotoBannerEventData,
-        },
-        {
-            id: "2",
-            nomeEvento: "CURSO DE LÍDERES",
-            localEvento: "ADAC Church",
-            dataEvento: "10/04/2026",
-            horaEvento: "19:00",
-            descricaoEvento: "Evento voltado para formação de líderes...",
-            fotoEvento: fotoBannerEventData,
-        },
-        {
-            id: "3",
-            nomeEvento: "NOITE DE ADORAÇÃO",
-            localEvento: "ADAC Church",
-            dataEvento: "12/04/2026",
-            horaEvento: "21:00",
-            descricaoEvento: "Uma noite especial de louvor e adoração...",
-            fotoEvento: fotoBannerEventData,
-        },
-        {
-            id: "4",
-            nomeEvento: "VIGÍLIA",
-            localEvento: "ADAC Church",
-            dataEvento: "15/04/2026",
-            horaEvento: "23:00",
-            descricaoEvento: "Vigília de oração durante toda a noite...",
-            fotoEvento: fotoBannerEventData,
-        },
-    ];
+    const [form, setForm] = useState({
+        nomeEvento: "",
+        localEvento: "",
+        dataEvento: "",
+        horaEvento: "",
+        descricaoEvento: "",
+        fotoEvento: null as File | null
+    });
 
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
 
         if (file) {
-            const url = URL.createObjectURL(file);
-            setPreview(url);
+            setPreview(URL.createObjectURL(file));
+
+            setForm((prev) => ({
+            ...prev,
+            fotoEvento: file
+            }));
         }
     }
 
     function handleRemoveImage() {
         setPreview(null);
+
+        setForm((prev) => ({
+            ...prev,
+            fotoEvento: null
+        }));
     }
+
+    // Carrega e insere no state "setEventos" os ministerios do banco resgatados
+    useEffect(() => {
+        fetchAllEventos().then((data) => {
+        setEventos(Array.isArray(data) ? data : []);
+    });
+    }, []);
     
     return(
 
@@ -110,20 +99,24 @@ export function EventosClient(){
                 </div>    
 
                 {/* EVENT CARD'S */}
+
                 <div className={`${styles.customScroll} max-w-7xl max-h-[620px] overflow-y-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 mt-6`}>
                     {eventos.map((evento) => (
                         <CardEventos
                             key={evento.id}
-                            id={evento.id}
-                            nomeEvento={evento.nomeEvento}
-                            localEvento={evento.localEvento}
-                            dataEvento={evento.dataEvento}
-                            horaEvento={evento.horaEvento}
-                            descricaoEvento={evento.descricaoEvento}
-                            fotoEvento={evento.fotoEvento}
+                            {...evento}
+                            setEventos={setEventos}
                         />
                     ))}
-                </div>            
+                </div> 
+
+                {eventos.length === 0 && (
+                    <>
+                        <div className={`${styles.customScroll} max-w-full max-h-[200px] h-[200px] w-full grid grid-cols-1 mt-6 justify-center items-center`}>
+                            <span className="text-normal text-center font-montserrat md:text-xl">Não há eventos</span>
+                        </div>
+                    </>
+                )}         
             </div>
 
             <Footer />
@@ -164,7 +157,9 @@ export function EventosClient(){
                             </div>
 
                             <input
+                                name="fotoEvento"
                                 type="file"
+                                required
                                 className="hidden"
                                 onChange={handleImageChange}
                             />
@@ -172,14 +167,22 @@ export function EventosClient(){
 
 
                         <input
+                            name="nomeEvento"
+                            value={form.nomeEvento}
+                            onChange={(e) => setForm({ ...form, nomeEvento: e.target.value })}
                             type="text"
+                            required
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
                             placeholder:text-white"
                             placeholder="Nome do evento"
                         />
 
                         <input
+                            name="localEvento"
+                            value={form.localEvento}
+                            onChange={(e) => setForm({ ...form, localEvento: e.target.value })}
                             type="text"
+                            required
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white
                             placeholder:text-white"
                             placeholder="Local"
@@ -187,12 +190,18 @@ export function EventosClient(){
 
                         <div className="flex gap-2">
                             <input
+                            name="dataEvento"
+                            value={form.dataEvento}
+                            onChange={(e) => setForm({ ...form, dataEvento: e.target.value })}
                             type="date"
                             required
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark"
                             placeholder="Data"
                             />
                             <input
+                            name="horaEvento"
+                            value={form.horaEvento}
+                            onChange={(e) => setForm({ ...form, horaEvento: e.target.value })}
                             type="time"
                             required
                             className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark"
@@ -201,6 +210,10 @@ export function EventosClient(){
                         </div>
 
                         <textarea
+                            name="descricaoEvento"
+                            value={form.descricaoEvento}
+                            onChange={(e) => setForm({ ...form, descricaoEvento: e.target.value })}
+                            required
                             className="w-full mb-4 p-2 rounded bg-[#1a1a1a] text-white
                             placeholder:text-white"
                             placeholder="Descrição"
@@ -215,6 +228,26 @@ export function EventosClient(){
                             </button>
 
                             <button
+                            type="submit"
+                            onClick={
+                                async () => {
+                                    const res = await handleNewEvento(form);
+
+                                    if(res?.data){
+                                        setEventos((prev) => [res.data, ...prev]);
+                                        setIsNewEventOpen(false);
+                                        setForm({
+                                            nomeEvento: "",
+                                            localEvento: "",
+                                            dataEvento: "",
+                                            horaEvento: "",
+                                            descricaoEvento: "",
+                                            fotoEvento: null
+                                        });
+                                        setPreview(null);
+                                    }
+                                }
+                            }
                             className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
                             >
                             Criar Evento

@@ -1,28 +1,29 @@
 import { supabaseServer } from "@/lib/supabase/server";
-import { Ministerio } from "@/types/types";
+import { Eventos } from "@/types/types";
 import toast from "react-hot-toast";
 
-export async function handleUpdateMinisterio(id: string, data: Ministerio) {
+export async function handleUpdateEvento(id: string, data: Eventos) {
+
   toast.loading("Atualizando...");
 
   try {
     let imageUrl: string | null = null;
 
     // se veio nova imagem
-    if (data.fotoMinisterio instanceof File) {
-      const file = data.fotoMinisterio;
+    if (data.fotoEvento instanceof File) {
+      const file = data.fotoEvento;
 
       const extension = file.name.split('.').pop();
       const fileName = `eventos/${Date.now()}.${extension}`;
 
       const { error: uploadError } = await supabaseServer.storage
-        .from("ministerios")
+        .from("eventos")
         .upload(fileName, file);
 
       if (uploadError) throw uploadError;
 
       const { data: publicUrl } = supabaseServer.storage
-        .from("ministerios")
+        .from("eventos")
         .getPublicUrl(fileName);
 
       imageUrl = publicUrl.publicUrl;
@@ -30,17 +31,18 @@ export async function handleUpdateMinisterio(id: string, data: Ministerio) {
 
     // 🧠 update banco
     const { data: updated, error } = await supabaseServer
-      .from("ministerios")
+      .from("eventos")
       .update({
-        nomeMinisterio: data.nomeMinisterio,
-        liderMinisterio: data.liderMinisterio,
-        descricaoMinisterio: data.descricaoMinisterio,
-        statusMinisterio: data.statusMinisterio,
-        fotoMinisterio:
+        nomeEvento: data.nomeEvento,
+        localEvento: data.localEvento,
+        dataEvento: data.dataEvento,
+        horaEvento: data.horaEvento,
+        descricaoEvento: data.descricaoEvento,
+        fotoEvento:
           imageUrl !== null
             ? imageUrl
-            : typeof data.fotoMinisterio === "string"
-            ? data.fotoMinisterio
+            : typeof data.fotoEvento === "string"
+            ? data.fotoEvento
             : null,
       })
       .eq("id", id)
@@ -50,7 +52,7 @@ export async function handleUpdateMinisterio(id: string, data: Ministerio) {
     if (error) throw error;
 
     toast.dismiss();
-    toast.success("Ministério tualizado!");
+    toast.success("Evento atualizado!");
 
     return { success: true, data: updated };
   } catch (error) {
