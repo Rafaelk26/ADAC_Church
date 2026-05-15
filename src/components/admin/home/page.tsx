@@ -1,14 +1,53 @@
+"use client";
+
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import { Header } from "@/components/all/Header"
 import { Footer } from "@/components/all/Footer"
 import { CardInformation } from "@/components/admin/home/CardInformation"
 import { TableInformation } from "@/components/admin/home/TableInformation"
+import { Celula, Eventos, Ministerio,Trabalhador, Visitante } from "@/types/types"
+import { fetchAllEventos } from "@/functions/GET/fetchAllEventos"
+import { fetchAllCelulas } from "@/functions/GET/fetchAllCelulas"
+import { fetchAllMinisters } from "@/functions/GET/fetchAllMinisters"
+import { fetchAllTrabalhadores } from "@/functions/GET/fetchAllTrabalhadores"
+import { fetchAllVisitantes } from "@/functions/GET/fetchAllVisitantes"
+import { animatedNumber } from "@/functions/ALL/animatedNumber";
 
 import styles from "./styles.module.css";
-
 import foto from "../../../../public/assets/backgroundAdmin.png"
 
-export async function AdminHomeClient(){
+
+export function AdminHomeClient(){
+
+    const [ celulas, setCelulas ] = useState<Celula[]>([])
+    const [ eventos, setEventos ] = useState<Eventos[]>([])
+    const [ ministerio, setMinisterio ] = useState<Ministerio[]>([])
+    const [ trabalhador, setTrabalhador ] = useState<Trabalhador[]>([])
+    const [ visitante, setVisitante ] = useState<Visitante[]>([])
+
+    useEffect(()=> {
+        fetchAllEventos().then((data) => {
+            setEventos(Array.isArray(data) ? data : []);
+        });
+
+        fetchAllCelulas().then((data) => {
+            setCelulas(Array.isArray(data) ? data : []);
+        });
+
+        fetchAllMinisters().then((data) => {
+            setMinisterio(Array.isArray(data) ? data : []);
+        });
+
+        fetchAllTrabalhadores().then((data) => {
+            setTrabalhador(Array.isArray(data) ? data : []);
+        });
+
+        fetchAllVisitantes().then((data) => {
+            setVisitante(Array.isArray(data) ? data : []);
+        });
+    }, [])
+
     return(
         <>
             <section className="relative h-full w-full overflow-visible">
@@ -40,31 +79,31 @@ export async function AdminHomeClient(){
                     <div className={`${styles.customScroll} w-full flex gap-4 overflow-x-auto p-1`}>
                     <CardInformation
                     nome="Trabalhadores" 
-                    numeros={2}
+                    numeros={animatedNumber(trabalhador.length)}
                     legenda="Pessoas interessadas em trabalhar em ministério da igreja."
                     link="/admin/trabalhadores" />
 
                     <CardInformation
                     nome="Eventos Ativos" 
-                    numeros={3}
+                    numeros={animatedNumber(eventos.length)}
                     legenda="Eventos que estão aberto ao público para ser frequentado."
                     link="/admin/eventos" />
 
                     <CardInformation
                     nome="Células Ativas"
-                    numeros={218}
+                    numeros={animatedNumber(celulas.length)}
                     legenda="Células abertas para novos membros participarem."
                     link="/admin/celulas" />
 
                     <CardInformation
                     nome="Visitantes Interessados" 
-                    numeros={12}
+                    numeros={animatedNumber(visitante.length)}
                     legenda="Pessoas interessadas em fazer uma visita na igreja."
                     link="/admin/visitantes" />
 
                     <CardInformation
                     nome="Ministérios Abertos" 
-                    numeros={12}
+                    numeros={animatedNumber(ministerio.length)}
                     legenda="Ministérios abertos para servir ao Senhor com excelência."
                     link="/admin/ministerios" />
                     </div>

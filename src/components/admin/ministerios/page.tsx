@@ -49,7 +49,6 @@ export function MinisteriosClient() {
     }));
     }
 
-
     // Carrega e insere no state "setMinisterios" os ministerios do banco resgatados
     useEffect(() => {
         fetchAllMinisters().then((data) => {
@@ -58,7 +57,7 @@ export function MinisteriosClient() {
     }, []);
 
     return (
-        <section className="relative h-full w-full overflow-visible">
+        <section className="relative h-full w-full overflow-visible flex flex-col flex-1">
             <div className="relative z-50">
                 <Header />
             </div>

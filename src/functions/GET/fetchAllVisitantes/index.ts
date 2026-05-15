@@ -5,5 +5,5 @@ export async function fetchAllVisitantes() {
     .from("visitantes")
     .select("*");
 
-    console.log("DATA VISITANTES:", data);
+    return data;
 }

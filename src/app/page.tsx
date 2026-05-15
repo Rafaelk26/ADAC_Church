@@ -1,5 +1,4 @@
 "use client";
-
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { Main } from "@/components/home/Main";
@@ -13,6 +12,7 @@ import { Social } from "@/components/home/Social";
 import { Visit } from "@/components/home/Visit";
 
 export default function Home() {
+
   return (
     
     <>

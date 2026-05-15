@@ -43,6 +43,8 @@ export interface Trabalhador {
     id?: string;
     nomeTrabalhador: string;
     whatsappTrabalhador: string;
+    nomeMinisterio?: string;
+    fotoMinisterio?: string | File | StaticImageData | null;
     criado_em?: string;
 }
 
