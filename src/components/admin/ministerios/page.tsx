@@ -8,7 +8,7 @@ import { Footer } from "@/components/all/Footer";
 import { CardMinisters } from "@/components/admin/ministerios/CardMinisters";
 import { fetchAllMinisters } from "@/functions/GET/fetchAllMinisters";
 import { handleNewMinisterio } from "@/functions/POST/handleNewMinisterio";
-import { Ministerio } from "@/types/types";
+import { Ministerio, MinisterioForm } from "@/types/types";
 
 import styles from "./styles.module.css";
 import foto from "../../../../public/assets/backgroundAdmin.png";
@@ -17,12 +17,12 @@ import uploadImage from "../../../../public/assets/uploadImage.png";
 export function MinisteriosClient() {
   const [isNewEventOpen, setIsNewEventOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<MinisterioForm>({
     nomeMinisterio: "",
     liderMinisterio: "",
     descricaoMinisterio: "",
     statusMinisterio: false,
-    fotoMinisterio: null as File | null 
+    fotoMinisterio: "",
   });
 
   const [ ministerios, setMinisterios ] = useState<Ministerio[]>([]);

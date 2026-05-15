@@ -33,7 +33,7 @@ export function Social() {
 
                 {/* Card YouTube */}
                 <Link href="https://www.youtube.com/@ADACCHURCH/" target="_blank" rel="noopener noreferrer">
-                    <div className="w-full h-32 flex items-center justify-center gap-4 bg-[url('/assets/bgYoutube.png')] bg-cover bg-center rounded-2xl
+                    <div className="w-full h-32 flex items-center justify-center gap-4 bg-white bg-cover bg-center rounded-2xl
                     hover:scale-105 transition-transform duration-300">
                         {/* Icon */}
                         <FaYoutube className="text-red-500 text-5xl" />

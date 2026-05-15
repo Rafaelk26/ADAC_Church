@@ -21,9 +21,18 @@ export interface Ministerio {
     descricaoMinisterio: string;
     statusMinisterio: boolean;
     membrosMinisterio?: string[];
-    fotoMinisterio?: string | StaticImageData | null;
+    fotoMinisterio?: string | StaticImageData | null | File;
     criado_em?: string;
 }
+
+
+export type MinisterioForm = {
+  nomeMinisterio: string;
+  liderMinisterio: string;
+  descricaoMinisterio: string;
+  statusMinisterio: boolean;
+  fotoMinisterio: string | StaticImageData | File | null | undefined;
+};
 
 
 export interface Eventos {

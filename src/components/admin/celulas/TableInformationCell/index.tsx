@@ -12,6 +12,7 @@ import { Celula } from "@/types/types";
 
 import styles from "./styles.module.css";
 import banner from "../../../../../public/assets/BANNER 3.png"
+import { formatHour } from "@/functions/ALL/formatHour";
 
 export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], setCelulas: any }) {
 
@@ -120,7 +121,7 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
                                     </td>
 
                                     <td className="py-4 px-4">
-                                        {c?.horaCelula}
+                                        {formatHour(c?.horaCelula)}
                                     </td>
 
                                     <td className="py-4 px-4">

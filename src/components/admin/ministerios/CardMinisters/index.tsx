@@ -6,7 +6,7 @@ import { IoMdTrash } from "react-icons/io";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { handleUpdateMinisterio } from "@/functions/PUT/handleUpdateMinisterio";
 import { handleDeleteMinisterio } from "@/functions/DELETE/handleDeleteMinisterio";
-import { Ministerio } from "@/types/types";
+import { Ministerio, MinisterioForm } from "@/types/types";
 
 import fotoBannerEvent from "../../../../../public/assets/BANNER 3.png"
 
@@ -23,7 +23,7 @@ export function CardMinisters({
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [previewEdit, setPreviewEdit] = useState<string | null>(null);
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<MinisterioForm>({
         nomeMinisterio,
         liderMinisterio,
         descricaoMinisterio,
@@ -107,7 +107,7 @@ export function CardMinisters({
             setIsDeleteOpen(false);
         }
     };
-    
+
     
     return(
         <div key={id} className="w-full rounded-lg py-8 px-6 bg-[#0a0a0a]/80">
