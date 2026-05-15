@@ -25,7 +25,7 @@ export function Ministries() {
             </div>
 
             <div className="w-full mt-12 mx-auto flex justify-center">
-              <ButtonLink nome="Conhecer os ministérios" href="#" />
+              <ButtonLink nome="Conhecer os ministérios" href="/ministerios" />
             </div>
         </main>
     )

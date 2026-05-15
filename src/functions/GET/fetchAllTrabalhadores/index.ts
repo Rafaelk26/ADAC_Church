@@ -9,7 +9,7 @@ export async function fetchAllTrabalhadores() {
 
   const { data: ministerios, error: errorMinisterio } = await supabaseServer
     .from("ministerios")
-    .select("id, nomeMinisterio, fotoMinisterio");
+    .select("id, nomeMinisterio, fotoMinisterio, liderMinisterio");
 
   if (errorMinisterio) throw errorMinisterio;
 
@@ -23,6 +23,7 @@ export async function fetchAllTrabalhadores() {
       nomeTrabalhador: t.nomeTrabalhador,
       whatsappTrabalhador: t.whatsappTrabalhador,
       nomeMinisterio: ministerio?.nomeMinisterio ?? "Sem ministério",
+      liderMinisterio: ministerio?.liderMinisterio ?? "Sem líder",
       fotoMinisterio: ministerio?.fotoMinisterio ?? null,
     };
   });

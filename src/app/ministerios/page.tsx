@@ -6,26 +6,30 @@ import { Header } from "@/components/all/Header";
 import { Wrapper } from "@/components/all/Wrapper";
 import { MinistersCard } from "@/components/ministerios/MinistersCard";
 import { Main } from "@/components/ministerios/Main";
+import { Footer } from "@/components/all/Footer";
+import { fetchAllMinisters } from "@/functions/GET/fetchAllMinisters";
+import { fetchAllTrabalhadores } from "@/functions/GET/fetchAllTrabalhadores";
+import { Ministerio, Trabalhador } from "@/types/types";
+
 import styles from './styles.module.css'
 import foto from "../../../public/assets/BANNER 2.png";
-import { Footer } from "@/components/all/Footer";
 
 export default function Ministerios() {
 
-    const [ministers, setMinisters] = useState<any[]>([]);
+    const [ ministerios, setMinisterios ] = useState<Ministerio[]>([]);
+    const [ ministersWork, setMinistersWork ] = useState<Trabalhador[]>([]);
+    
 
+    // Carrega e insere no state "setMinisterios" os ministerios do banco resgatados
+    useEffect(() => {
+        fetchAllTrabalhadores().then((data) => {
+        setMinistersWork(Array.isArray(data) ? data : []);
+      })
 
-    useEffect(()=> {
-        const minister = Array.from({ length: 10 }).map((_, i) => ({
-            id: i,
-            nomeMinisterio: "Célula X",
-            nomeLider: "Líder X",
-            status: true,
-            fotoMinisterio: foto,
-        }));
-
-        setMinisters(minister)
-    },[])
+        fetchAllMinisters().then((data) => {
+        setMinisterios(Array.isArray(data) ? data : []);
+      })
+    }, []);
 
 
   return (
@@ -54,15 +58,16 @@ export default function Ministerios() {
             className="w-11/12 grid grid-cols-1 mt-16 mb-20 md:mt-32 gap-8 mx-auto
             md:grid-cols-3 md:gap-10 md:w-full md:mx-0"
             >
-                {ministers.map((minister) => (
+                {ministerios.map((minister) => (
                     <div className={`${styles.animateFadeUp}`} key={minister.id}>
-                        <MinistersCard 
-                        fotoMinisterio={foto} 
-                        nomeMinisterio="Ministério X"
-                        nomeLider="Líder X"
-                        status={true} 
-                        link={`/`}
-                        {...minister} />
+                        <MinistersCard
+                          id={minister.id}
+                          fotoMinisterio={minister.fotoMinisterio ?? undefined}
+                          nomeMinisterio={minister.nomeMinisterio}
+                          liderMinisterio={minister.liderMinisterio}
+                          statusMinisterio={minister.statusMinisterio}
+                          link="/"
+                        />
                     </div>
                 ))}
             </main>

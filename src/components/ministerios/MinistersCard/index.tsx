@@ -1,13 +1,44 @@
+"use client";
+
+import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
+import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
+import { handleNewWorker } from "@/functions/POST/handleNewWorker";
+import { Ministerio } from "@/types/types";
+
+import styles from './styles.module.css'
 import foto from "../../../../public/assets/BANNER 1.png";
 
-export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider, link}: 
-    {
-        fotoMinisterio?: StaticImageData; nomeMinisterio: string; 
-        status: boolean; nomeLider: string; link: string;
+export function MinistersCard({
+    id,
+    fotoMinisterio,
+    nomeMinisterio,
+    statusMinisterio,
+    liderMinisterio,
+    link
+    }: {
+    id: string | undefined;
+    fotoMinisterio?: string | File | StaticImageData | null;
+    nomeMinisterio: string;
+    statusMinisterio: boolean;
+    liderMinisterio: string;
+    link: string;
+    }) {
+
+    const [isNewWorkOpen, setIsNewWorkOpen] = useState(false);
+    const [ form, setForm ] = useState({
+        nomeTrabalhador: "",
+        whatsappTrabalhador: "",
+        ministerioTrabalhador: "",
+    })
+
+    function getImageSrc(src: any) {
+        if (!src) return foto;
+        if (typeof src === "string") return src;
+        return src;
     }
-) {
+
     return (
         <>
             <div className="w-full border-2 border-gray-500/80 rounded-xl h-56 relative overflow-hidden">
@@ -16,7 +47,7 @@ export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider
                 <Image
                     className="w-full h-full object-cover"
                     alt={"Nome do ministério"}
-                    src={fotoMinisterio ? fotoMinisterio : foto}
+                    src={getImageSrc(fotoMinisterio)}
                     width={500}
                     height={500}
                 />
@@ -26,7 +57,7 @@ export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider
                         <Image
                             className="w-12 h-12 object-cover rounded-full"
                             alt={"Nome do ministério"}
-                            src={fotoMinisterio ? fotoMinisterio : foto}
+                            src={getImageSrc(fotoMinisterio)}
                             width={100}
                             height={100}
                         />
@@ -40,7 +71,7 @@ export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider
                         {/* Status do ministério */}
                         <div className="w-full flex gap-2 items-center">
                             
-                            {status === true ? (
+                            {statusMinisterio === true ? (
                                 <>
                                     <div className="flex items-center gap-1">
                                         <FaCircleCheck className="text-green-500" />
@@ -61,7 +92,7 @@ export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider
                         <div className="w-full">
                             <div className="w-full">
                                 <h1 className="w-full text-white font-manrope font-light text-md">
-                                    {nomeLider}
+                                    {liderMinisterio}
                                 </h1>
                             </div>
                         </div>
@@ -79,10 +110,17 @@ export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider
                         Ver ministério
                     </a>
 
-                    {status && (
+                    {statusMinisterio && (
                         <>
                             <button 
-                            onClick={()=> (console.log("clicou!"))}
+                            onClick={() => {
+                                setIsNewWorkOpen(true);
+
+                                setForm((prev) => ({
+                                    ...prev,
+                                    ministerioTrabalhador: nomeMinisterio,
+                                }));
+                            }}
                             className="
                             w-max bg-green-600 text-white text-sm 
                             font-medium font-manrope py-2 px-2 rounded-md transition-all
@@ -92,6 +130,74 @@ export function MinistersCard({fotoMinisterio, nomeMinisterio, status, nomeLider
                         </>
                     )}
                 </div>
+
+                {/* MODAL NEW WORKER */}
+        
+                {isNewWorkOpen && (
+                    <div className="w-full h-svh fixed inset-0 bg-black/70 h-screen z-50 flex items-center justify-center">
+                        <div className="bg-[#0a0a0a] p-6 rounded-xl w-full max-w-sm md:max-w-lg">
+                        
+                            <h2 className="text-white text-xl font-manrope">Cadastre-se</h2>
+                            <span className="text-gray-400 text-sm mb-4 font-montserrat">Insira seus dados para servir no ministério!</span>
+
+                            <p className="text-white mb-2">
+                                Ministério selecionado: <strong>{form.ministerioTrabalhador}</strong>
+                            </p>
+                            <input
+                                name="nomeTrabalhador"
+                                value={form.nomeTrabalhador}
+                                onChange={(e) => setForm({ ...form, nomeTrabalhador: e.target.value })}
+                                type="text"
+                                required
+                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
+                                placeholder:text-white"
+                                placeholder="Seu Nome"
+                            />
+
+                            <input
+                                name="whatsappTrabalhador"
+                                value={form.whatsappTrabalhador}
+                                onChange={(e) => setForm({ ...form, whatsappTrabalhador: formatNumberForWhatsApp(e.target.value) })}
+                                type="text"
+                                required
+                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white
+                                placeholder:text-white"
+                                placeholder="Seu WhatsApp"
+                            />
+
+                            <div className="flex justify-end gap-3">
+                                <button
+                                onClick={() => setIsNewWorkOpen(false)}
+                                className="px-4 py-2 bg-gray-600 rounded hover:cursor-pointer hover:bg-gray-700 hover:scale-105 transition-all"
+                                >
+                                Cancelar
+                                </button>
+
+                                <button
+                                type="submit"
+                                onClick={
+                                    async () => {
+                                        console.log(form)
+                                        const res = await handleNewWorker(form);
+
+                                        if(res?.data){
+                                            setIsNewWorkOpen(false);
+                                            setForm({
+                                                nomeTrabalhador: "",
+                                                whatsappTrabalhador: "",
+                                                ministerioTrabalhador: ""
+                                            });
+                                        }
+                                    }
+                                }
+                                className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
+                                >
+                                Enviar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     )
