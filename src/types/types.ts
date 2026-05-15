@@ -21,7 +21,7 @@ export interface Ministerio {
     descricaoMinisterio: string;
     statusMinisterio: boolean;
     membrosMinisterio?: string[];
-    fotoMinisterio?: string | File | StaticImageData | null;
+    fotoMinisterio?: string | StaticImageData | null;
     criado_em?: string;
 }
 

@@ -3,9 +3,6 @@
 import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
-import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
-import { handleNewWorker } from "@/functions/POST/handleNewWorker";
-import { Ministerio } from "@/types/types";
 
 import styles from './styles.module.css'
 import foto from "../../../../public/assets/BANNER 1.png";
@@ -16,26 +13,18 @@ export function MinistersCard({
     nomeMinisterio,
     statusMinisterio,
     liderMinisterio,
-    link
+    onOpenModal
     }: {
-    id: string | undefined;
-    fotoMinisterio?: string | File | StaticImageData | null;
+    id?: string;
+    fotoMinisterio?: string | StaticImageData | null;
     nomeMinisterio: string;
     statusMinisterio: boolean;
     liderMinisterio: string;
-    link: string;
+    onOpenModal: () => void;
     }) {
 
-    const [isNewWorkOpen, setIsNewWorkOpen] = useState(false);
-    const [ form, setForm ] = useState({
-        nomeTrabalhador: "",
-        whatsappTrabalhador: "",
-        ministerioTrabalhador: "",
-    })
-
-    function getImageSrc(src: any) {
+    function getImageSrc(src?: string | StaticImageData | null) {
         if (!src) return foto;
-        if (typeof src === "string") return src;
         return src;
     }
 
@@ -103,24 +92,17 @@ export function MinistersCard({
                 {/* Botões */}
 
                 <div className="absolute flex gap-2 top-3/5 mt-11 px-4 w-full z-50">
-                    <a href={link} className="
+                    {/* <a href={link} className="
                         w-max bg-gray-600 text-white text-sm 
                         font-medium font-manrope py-2 px-2 rounded-md transition-all
                         hover:bg-gray-700 hover:scale-105 hover:cursor-pointer">
                         Ver ministério
-                    </a>
+                    </a> */}
 
                     {statusMinisterio && (
                         <>
                             <button 
-                            onClick={() => {
-                                setIsNewWorkOpen(true);
-
-                                setForm((prev) => ({
-                                    ...prev,
-                                    ministerioTrabalhador: nomeMinisterio,
-                                }));
-                            }}
+                            onClick={onOpenModal}
                             className="
                             w-max bg-green-600 text-white text-sm 
                             font-medium font-manrope py-2 px-2 rounded-md transition-all
@@ -130,74 +112,6 @@ export function MinistersCard({
                         </>
                     )}
                 </div>
-
-                {/* MODAL NEW WORKER */}
-        
-                {isNewWorkOpen && (
-                    <div className="w-full h-svh fixed inset-0 bg-black/70 h-screen z-50 flex items-center justify-center">
-                        <div className="bg-[#0a0a0a] p-6 rounded-xl w-full max-w-sm md:max-w-lg">
-                        
-                            <h2 className="text-white text-xl font-manrope">Cadastre-se</h2>
-                            <span className="text-gray-400 text-sm mb-4 font-montserrat">Insira seus dados para servir no ministério!</span>
-
-                            <p className="text-white mb-2">
-                                Ministério selecionado: <strong>{form.ministerioTrabalhador}</strong>
-                            </p>
-                            <input
-                                name="nomeTrabalhador"
-                                value={form.nomeTrabalhador}
-                                onChange={(e) => setForm({ ...form, nomeTrabalhador: e.target.value })}
-                                type="text"
-                                required
-                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
-                                placeholder:text-white"
-                                placeholder="Seu Nome"
-                            />
-
-                            <input
-                                name="whatsappTrabalhador"
-                                value={form.whatsappTrabalhador}
-                                onChange={(e) => setForm({ ...form, whatsappTrabalhador: formatNumberForWhatsApp(e.target.value) })}
-                                type="text"
-                                required
-                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white
-                                placeholder:text-white"
-                                placeholder="Seu WhatsApp"
-                            />
-
-                            <div className="flex justify-end gap-3">
-                                <button
-                                onClick={() => setIsNewWorkOpen(false)}
-                                className="px-4 py-2 bg-gray-600 rounded hover:cursor-pointer hover:bg-gray-700 hover:scale-105 transition-all"
-                                >
-                                Cancelar
-                                </button>
-
-                                <button
-                                type="submit"
-                                onClick={
-                                    async () => {
-                                        console.log(form)
-                                        const res = await handleNewWorker(form);
-
-                                        if(res?.data){
-                                            setIsNewWorkOpen(false);
-                                            setForm({
-                                                nomeTrabalhador: "",
-                                                whatsappTrabalhador: "",
-                                                ministerioTrabalhador: ""
-                                            });
-                                        }
-                                    }
-                                }
-                                className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 hover:cursor-pointer hover:scale-105 transition-all"
-                                >
-                                Enviar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     )
