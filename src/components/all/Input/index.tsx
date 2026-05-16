@@ -3,6 +3,7 @@ export function Input({ type, placeholder, ...rest }: React.InputHTMLAttributes<
     return(
         <>
             <input 
+            {...rest}
             type={type}
             placeholder={placeholder}
             className="w-full bg-gray-400/10 p-3 rounded-md border-2 border-gray-500 font-manrope transition-all

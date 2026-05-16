@@ -4,6 +4,7 @@ export interface Celula {
     id?: string;
     nomeCelula: string;
     liderCelula: string;
+    liderWhatsapp?: string;
     bairroCelula: string;
     diaCelula: string;
     horaCelula: string;

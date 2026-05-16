@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { celulaSchema, CelulaFormData } from "@/components/admin/celulas/page";
 import toast from "react-hot-toast";
+import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
 
 
 export async function handleNewCelula(data: CelulaFormData) {
@@ -37,6 +38,7 @@ export async function handleNewCelula(data: CelulaFormData) {
       .insert({
         nomeCelula: parsed.nomeCelula,
         liderCelula: parsed.liderCelula,
+        liderWhatsapp: parsed.liderWhatsapp,
         bairroCelula: parsed.bairroCelula,
         diaCelula: parsed.diaCelula,
         horaCelula: parsed.horaCelula,

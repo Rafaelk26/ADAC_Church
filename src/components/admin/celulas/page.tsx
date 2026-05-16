@@ -18,11 +18,13 @@ import styles from "./styles.module.css";
 
 import foto from "../../../../public/assets/backgroundAdmin.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
+import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
 
 
 export const celulaSchema = z.object({
     nomeCelula: z.string().min(1, "Nome obrigatório"),
     liderCelula: z.string().min(1, "Líder obrigatório"),
+    liderWhatsapp: z.string().min(1, "Número de WhatsApp obrigatório"),
     bairroCelula: z.string().min(1),
     diaCelula: z.string().min(1),
     horaCelula: z.string().min(1),
@@ -75,12 +77,19 @@ export function CelulasClient(){
         return matchNome && matchBairro && matchGenero;
     });
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) {
         const { name, value } = e.target;
+
+        const formattedValue =
+            name === "liderWhatsapp"
+            ? formatNumberForWhatsApp(value)
+            : value;
 
         setDataCellForm((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: formattedValue,
         }));
     }
 
@@ -103,7 +112,6 @@ export function CelulasClient(){
 
     useEffect(() => {
         fetchAllCelulas().then((data) => {
-        console.log(data)
         setCells(Array.isArray(data) ? data : data || []);
     });
     }, []);
@@ -152,7 +160,7 @@ export function CelulasClient(){
                 <div className="max-w-full w-full flex-col flex justify-between mx-auto gap-2 mt-3
                 md:flex-row md:mx-0 md:gap-0">
                 <div className="w-full md:max-w-1/3">
-                    <Input placeholder="Nome da célula" type="text" onChange={(e) => setSearch(e.target.value)} />
+                    <Input placeholder="Nome da célula" type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                     <div className="w-full flex max-w-full gap-2
                     md:justify-end md:max-w-1/3 md:gap-4">
@@ -406,14 +414,27 @@ export function CelulasClient(){
                             </Select>
                         </div>
 
-                        <input
-                            onChange={handleChange}
-                            name="horaCelula"
-                            type="time"
-                            required
-                            className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
-                            placeholder="Hora"
-                        />
+                        <div className="flex gap-2">
+                            <input
+                                onChange={handleChange}
+                                name="horaCelula"
+                                type="time"
+                                required
+                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
+                                placeholder="Hora"
+                            />
+
+                            <input
+                                type="text"
+                                name="liderWhatsapp"
+                                value={dataCellForm.liderWhatsapp}
+                                onChange={handleChange}
+                                className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
+                                placeholder:text-white"
+                                placeholder="WhatsApp do Líder"
+                            />
+                        </div>
+                        
 
                         <div className="flex justify-end gap-3">
                             <button

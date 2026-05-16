@@ -46,6 +46,7 @@ export async function handleUpdateCelula(id: string, data: CelulaFormData) {
       nomeCelula: parsed.nomeCelula,
       liderCelula: parsed.liderCelula,
       bairroCelula: parsed.bairroCelula,
+      liderWhatsapp: parsed.liderWhatsapp,
       diaCelula: parsed.diaCelula,
       horaCelula: parsed.horaCelula,
       generoCelula: parsed.generoCelula,

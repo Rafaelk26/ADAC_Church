@@ -143,6 +143,7 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
                                             setDataCellForm({
                                                 nomeCelula: c.nomeCelula,
                                                 liderCelula: c.liderCelula,
+                                                liderWhatsapp: c.liderWhatsapp,
                                                 bairroCelula: c.bairroCelula,
                                                 diaCelula: c.diaCelula,
                                                 horaCelula: c.horaCelula,
@@ -368,15 +369,28 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
                                     </Select>
                                 </div>
 
-                                <input
-                                    name="horaCelula"
-                                    defaultValue={selectedCell?.horaCelula}
-                                    onChange={handleChange}
-                                    type="time"
-                                    required
-                                    className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
-                                    placeholder="Hora"
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        name="horaCelula"
+                                        defaultValue={selectedCell?.horaCelula}
+                                        onChange={handleChange}
+                                        type="time"
+                                        required
+                                        className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white scheme-dark mt-4"
+                                        placeholder="Hora"
+                                    />
+
+                                    <input
+                                        type="text"
+                                        name="liderWhatsapp"
+                                        value={selectedCell?.liderWhatsapp}
+                                        onChange={handleChange}
+                                        className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
+                                        placeholder:text-white"
+                                        placeholder="WhatsApp do Líder"
+                                    />
+                                </div>
+                                
 
 
                                 <div className="flex justify-end gap-3">

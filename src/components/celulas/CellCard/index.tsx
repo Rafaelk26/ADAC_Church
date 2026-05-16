@@ -4,87 +4,71 @@ import { TbWomanFilled } from "react-icons/tb";
 import { IoIosWoman } from "react-icons/io";
 import { GiSwordwoman } from "react-icons/gi";
 import { IoMdMan } from "react-icons/io";
+import { formatNumberForVisit } from "@/functions/ALL/formatNumberForVisit";
 
 import foto from "../../../../public/assets/bgCellCard.png";
+import { Celula } from "@/types/types";
 
 
-export function CellCard({fotoCelula, nomeCelula, faixaCelula, bairroCelula, liderCelula, generoCelula}: 
-    {
-        fotoCelula?: string; nomeCelula: string; 
-        faixaCelula: string; bairroCelula: string; 
-        generoCelula: string; liderCelula: string;
-    }
+export function CellCard({fotoCelula, nomeCelula, liderWhatsapp, faixaCelula, bairroCelula, liderCelula, generoCelula}: Celula
 ) {
     return (
         <>
             <div className="w-full border-2 border-gray-500/80 rounded-xl h-56 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#090909] to-90% z-1" />
-                
-                        <Image
-                            key={fotoCelula}
-                            src={fotoCelula || foto}
-                            alt="Nome da célula"
-                            width={500}
-                            height={500}
-                            className="w-full h-full object-cover"
-                        />
-                
-                        <h1 className="absolute top-3/5 left-4 -mt-1 -translate-y-1/2 text-white font-manrope font-semibold text-3xl z-2">
-                          {nomeCelula}
-                        </h1>
-                
-                        {/* Faixa e Bairro */}
-                        <div className="w-full flex gap-2 items-center absolute top-3/5 left-4 mt-7 -translate-y-1/2 z-2">
-                            <div className="flex items-center gap-2">
-                                {/* Masculino */}
-                                {generoCelula === "Masculino" && (
-                                    <IoMdMan className="bg-blue-500 p-0.5 rounded-full" size={20} />
-                                )}
-                                {/* Feminino */}
-                                {generoCelula === "Feminino" && (
-                                    <IoIosWoman className="bg-pink-500 p-0.5 rounded-full" size={20} />
-                                )}
-                                {/* Kids */}
-                                {generoCelula === "Kids" && (
-                                    <TbWomanFilled className="bg-yellow-600 p-0.5 rounded-full" size={20} />
-                                )}
-                                {/* Casal */}
-                                {generoCelula === "Casal" && (
-                                    <ImManWoman className="bg-red-600 p-0.5 rounded-full" size={18} />
-                                )}
-                                {/* Mista */}
-                                {generoCelula === "Mista" && (
-                                    <ImManWoman className="bg-purple-600 p-0.5 rounded-full" size={18} />
-                                )}
-                                 {/* Par */}
-                                {generoCelula === "Par" && (
-                                    <ImManWoman className="bg-orange-600 p-0.5 rounded-full" size={18} />
-                                )}
-                                 {/* Adolescente */}
-                                {generoCelula === "Adolescente" && (
-                                    <GiSwordwoman className="bg-green-600 p-0.5 rounded-full" size={20} />
-                                )}
+            
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#090909] to-90% z-10" />
 
+            {/* Imagem */}
+            <Image
+                key={fotoCelula}
+                src={fotoCelula || foto}
+                alt="Nome da célula"
+                width={500}
+                height={500}
+                className="w-full h-full object-cover"
+            />
 
-                                <span className="font-manrope text-white">
-                                    {faixaCelula}
-                                </span>
-                            </div>
+            {/* CONTEÚDO */}
+            <div className="absolute bottom-4 left-4 z-20 flex flex-col gap-1">
 
-                            <span className="font-manrope text-white">
-                            - {bairroCelula}
-                            </span>
-                        </div>
+                {/* Nome */}
+                <h1 className="text-white font-manrope font-semibold text-2xl">
+                    {nomeCelula}
+                </h1>
 
-                        {/* Nome do líder */}
-                        <div className="w-full absolute top-3/5 left-4 mt-6 -translate-y-1/2 z-2">
-                            <div className="w-full">
-                                <h1 className="w-full absolute top-3/5 mt-7 -translate-y-1/2 text-white font-manrope font-light text-md">
-                                    {liderCelula}
-                                </h1>
-                            </div>
-                        </div>
-                
+                {/* Faixa + Bairro */}
+                <div className="flex items-center gap-1 text-white text-sm">
+                <div className="flex items-center gap-2">
+
+                    {generoCelula === "Masculino" && <IoMdMan className="bg-blue-500 p-0.5 rounded-full" size={20} />}
+                    {generoCelula === "Feminino" && <IoIosWoman className="bg-pink-500 p-0.5 rounded-full" size={20} />}
+                    {generoCelula === "Kids" && <TbWomanFilled className="bg-yellow-600 p-0.5 rounded-full" size={20} />}
+                    {generoCelula === "Casal" && <ImManWoman className="bg-red-600 p-0.5 rounded-full" size={18} />}
+                    {generoCelula === "Mista" && <ImManWoman className="bg-purple-600 p-0.5 rounded-full" size={18} />}
+                    {generoCelula === "Par" && <ImManWoman className="bg-orange-600 p-0.5 rounded-full" size={18} />}
+                    {generoCelula === "Adolescente" && <GiSwordwoman className="bg-green-600 p-0.5 rounded-full" size={20} />}
+
+                    <span className="text-white font-manrope font-normal text-base">{faixaCelula}</span>
+                </div>
+
+                <span className="text-white font-manrope font-normal text-base">- {bairroCelula}</span>
+                </div>
+
+                {/* Líder */}
+                <span className="text-white font-manrope text-base">
+                    {liderCelula}
+                </span>
+
+                {/* Botão */}
+                <button 
+                onClick={()=> liderWhatsapp ? formatNumberForVisit(liderWhatsapp, `Olá ${liderCelula}, venho do site e gostaria de fazer parte da célula ${nomeCelula}!`) : ""}
+                className="w-max px-4 py-2 bg-blue-600 rounded 
+                hover:bg-blue-700 hover:scale-105 hover:cursor-pointer transition-all">
+                    Participar da célula
+                </button>
+
+            </div>
             </div>
         </>
     )
