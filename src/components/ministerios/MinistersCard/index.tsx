@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 
-import styles from './styles.module.css'
 import foto from "../../../../public/assets/BANNER 1.png";
 
 export function MinistersCard({

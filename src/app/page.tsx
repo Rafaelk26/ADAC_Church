@@ -1,4 +1,6 @@
 "use client";
+
+import Image from "next/image";
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { Main } from "@/components/home/Main";
@@ -11,6 +13,8 @@ import { Programation } from "@/components/home/Programation";
 import { Social } from "@/components/home/Social";
 import { Visit } from "@/components/home/Visit";
 
+import foto from "../../public/assets/BANNER 1.png";
+
 export default function Home() {
 
   return (
@@ -22,15 +26,12 @@ export default function Home() {
           <Header />
         </div>
 
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/assets/video1.mp4" type="video/mp4" />
-        </video>
+        <Image 
+          alt="Foto de fundo"
+          src={foto}
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-65
+          md:opacity-85"
+        />
 
         <div className="absolute inset-0 bg-[#050505]/40 z-1" />
 
