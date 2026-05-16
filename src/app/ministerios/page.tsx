@@ -70,6 +70,11 @@ export default function Ministerios() {
                     <div className={`${styles.animateFadeUp}`} key={minister.id}>
                         <MinistersCard
                           {...minister}
+                          fotoMinisterio={
+                            minister.fotoMinisterio instanceof File
+                              ? URL.createObjectURL(minister.fotoMinisterio)
+                              : minister.fotoMinisterio
+                          }
                           onOpenModal={() => {
                             setSelectedMinisterio(minister);
                             setForm((prev) => ({

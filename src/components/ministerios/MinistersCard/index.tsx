@@ -23,8 +23,13 @@ export function MinistersCard({
     onOpenModal: () => void;
     }) {
 
-    function getImageSrc(src?: string | StaticImageData | null) {
+    function getImageSrc(src?: string | StaticImageData | null | File) {
         if (!src) return foto;
+
+        if (src instanceof File) {
+            return URL.createObjectURL(src);
+        }
+
         return src;
     }
 
