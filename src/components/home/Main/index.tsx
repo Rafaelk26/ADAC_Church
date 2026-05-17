@@ -9,9 +9,8 @@ export function Main(){
         <div className={`relative z-10 flex h-full w-full items-center justify-center px-6 ${styles.animateFadeUp}`}>
             <div className={`flex flex-col items-center gap-4 max-w-4xl text-center`}>
                 <h1
-                className={`text-6xl md:text-7xl mt-30 font-manrope font-bold text-white leading-[1.1]`}>
-                Um lugar para você <br />
-                chamar de <span className="text-blue-400">casa</span>
+                className={`text-5xl md:text-7xl mt-30 font-manrope font-bold text-white leading-[1.1]`}>
+                Um lugar para você chamar de <span className="text-blue-400">casa</span>
                 </h1>
 
                 <p

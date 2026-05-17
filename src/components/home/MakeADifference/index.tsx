@@ -11,21 +11,21 @@ export function MakeADifference() {
             {/* Conteúdo */}
             <div className="relative z-10 max-w-5xl w-full flex flex-col items-center gap-12 py-14">
                 <Image
-                    className="max-w-md w-full"
+                    className="max-w-sm md:max-w-lg w-full"
                     src={logoMake}
                     alt="Logo Make a Difference"
                     width={200}
                     height={100}
                 />
 
-                <h1 className="text-center text-xl font-montserrat font-light">
+                <h1 className="text-sm text-center md:text-xl font-montserrat font-light">
                     Portanto, vão e façam discípulos de todas as nações,
                     batizando‑os em nome do Pai, do Filho e do Espírito Santo,
                     ensinando‑os a obedecer a tudo o que eu ordenei a vocês.
                     E eu estarei sempre com vocês, até o fim dos tempos.
                 </h1>
 
-                <h1 className="text-center text-2xl font-manrope font-bold">
+                <h1 className="text-lg text-center md:text-2xl font-manrope font-bold">
                     Mateus 28:19-20 | NVI
                 </h1>
             </div>

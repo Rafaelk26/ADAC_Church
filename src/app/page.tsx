@@ -75,7 +75,7 @@ export default function Home() {
 
 
       {/* PROGRAMATION SECTION */}
-      <section className="mt-40 h-max scroll-mt-32" id="programation">
+      <section className="mt-40 h-max scroll-mt-32 mx-auto" id="programation">
         <Programation />
       </section>
 

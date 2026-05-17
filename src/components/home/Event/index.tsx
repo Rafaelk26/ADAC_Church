@@ -43,17 +43,21 @@ export function Event() {
       if (containerRef.current && carouselRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         const carouselWidth = carouselRef.current.scrollWidth;
-
-        setDragWidth(carouselWidth - containerWidth);
+        // Evita valores negativos se o conteúdo for menor que o container
+        setDragWidth(Math.max(0, carouselWidth - containerWidth));
       }
     };
 
-    calculateDrag();
+    // Pequeno delay para garantir que o DOM renderizou as imagens dos cards
+    const timer = setTimeout(calculateDrag, 100);
 
     window.addEventListener("resize", calculateDrag);
 
-    return () => window.removeEventListener("resize", calculateDrag);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", calculateDrag);
+    };
+  }, [events]);
 
   // Carrega e insere no state "setEvents" os ministerios do banco resgatados
   useEffect(() => {
@@ -61,7 +65,6 @@ export function Event() {
       setEvents(Array.isArray(data) ? data : []);
   });
   }, []);
-
 
   if (events.length === 0) {
     return (
@@ -143,7 +146,7 @@ export function Event() {
         {/* Carrossel */}
         <div
           ref={containerRef}
-          className="absolute bottom-6 right-6 z-30 max-w-[40%] overflow-hidden px-3 py-3"
+          className="absolute bottom-6 right-6 z-30 max-w-[40%] md:max-w-[40%] w-full overflow-hidden px-3 py-3"
         >
           <motion.div
             ref={carouselRef}
@@ -152,7 +155,7 @@ export function Event() {
               left: -dragWidth,
               right: 0,
             }}
-            className="flex gap-4 cursor-grab active:cursor-grabbing"
+            className="flex gap-4 cursor-grab active:cursor-grabbing w-max snap-x snap-mandatory"
           >
             {events.map((event) => (
               <motion.button
@@ -160,8 +163,8 @@ export function Event() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedEvent(event)}
                 className={`
-                  relative min-w-36 h-48 rounded-lg overflow-hidden shrink-0
-                  transition-all duration-300
+                  relative w-30 h-32 rounded-lg overflow-hidden shrink-0
+                  transition-all duration-300 snap-start
                   ${
                     selectedEvent.id === event.id
                       ? "ring-2 ring-white"

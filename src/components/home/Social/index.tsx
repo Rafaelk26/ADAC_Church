@@ -4,10 +4,10 @@ import { FaInstagram, FaFacebookF, FaYoutube, FaSpotify } from "react-icons/fa";
 
 export function Social() {
     return(
-        <section className="w-full mb-56
+        <section className="w-full mb-40 mt-12
         md:max-w-3xl md:mx-auto md:mt-8 md:mb-10 flex flex-col items-center">
 
-            <main className='w-full grid grid-cols-2 gap-5 mt-4'>
+            <main className='w-96 grid grid-cols-1 md:grid-cols-2 gap-5 mt-4 md:w-full'>
                 
                 {/* Card Instagram */}
                 <Link href="https://www.instagram.com/adacchurch/" target="_blank" rel="noopener noreferrer">

@@ -7,15 +7,17 @@ import { CardProgramation } from "./CardProgramation";
 export function Programation() {
     return (
         <>
-            <section className="max-w-6xl w-full mx-auto mt-16">
-                <div className="flex flex-col md:flex-row">
+            <section className="max-w-full w-full flex">
+                <div className="flex flex-col md:flex-row gap-10">
 
-                    <div className="w-7/12 flex flex-col justify-center gap-10">
+                    <div className="max-w-sm md:max-w-lg w-full flex flex-col justify-center gap-10
+                    md:w-full">
                         <div className="w-full flex flex-col items-start gap-2">
                             {/* Logo */}
                             <Image src={ADACLogo} className="w-50" alt="ADAC Church" width={200} height={200} />
                             
-                            <h1 className="text-6xl font-normal font-montserrat leading-[1.1]">Conheça a programação</h1>
+                            <h1 className="text-5xl font-normal font-montserrat leading-[1.1]
+                            md:text-6xl">Conheça a programação</h1>
                         </div>
 
                         <p className="text-left text-base font-montserrat font-light">
@@ -25,7 +27,8 @@ export function Programation() {
                     </div>
 
                     {/* Cards */}
-                    <div className="w-4/5 flex flex-col gap-3 items-center">
+                    <div className="max-w-sm md:max-w-lg w-full flex flex-col gap-3 items-center
+                    md:w-1/2">
                         <CardProgramation 
                         foto={IconCard} 
                         titulo="Células" 

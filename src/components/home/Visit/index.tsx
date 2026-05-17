@@ -34,7 +34,7 @@ export function Visit({ link }: { link: string }) {
                 <div className="w-full flex justify-between items-center mt-2">
                     {/* Logo */}
                     <Image src={ADACLogo} className="w-40" alt="ADAC Church" width={200} height={200} />
-                    <span className="font-semibold font-manrope">R. Eng. João Fonseca, 170 - Centro, Caraguatatuba - SP, 11660-200</span>
+                    <span className="w-4/12 text-xs text-end font-semibold font-manrope">R. Eng. João Fonseca, 170 - Centro, Caraguatatuba - SP, 11660-200</span>
                 </div>
 
                 <div className="w-full mt-10 flex justify-center">
@@ -50,7 +50,7 @@ export function Visit({ link }: { link: string }) {
            {/* MODAL NEW VISIT */}
 
             {isNewVisitOpen && (
-                <div className="fixed inset-0 bg-black/70 h-screen z-50 flex items-center justify-center">
+                <div className="fixed inset-0 bg-black/70 h-dvh z-50 flex items-center justify-center">
                     <div className="bg-[#0a0a0a] p-6 rounded-xl w-full max-w-sm md:max-w-lg">
                     
                         <h2 className="text-white text-xl font-manrope">Agendar visita</h2>
