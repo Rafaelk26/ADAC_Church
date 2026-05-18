@@ -13,7 +13,7 @@ export function Main(){
         </h1>
 
         <p className="text-base md:text-lg text-gray-200 font-montserrat font-light max-w-2xl">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.
+          Cada ministério representa uma área especial onde vidas são alcançadas, transformadas e fortalecidas através do amor e da palavra.
         </p>
 
         <div className="w-full mt-8 md:mt-12"></div>

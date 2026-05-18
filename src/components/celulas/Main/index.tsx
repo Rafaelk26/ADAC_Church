@@ -12,8 +12,9 @@ export function Main(){
           Sempre tem uma <span className="text-blue-400">célula</span> próxima de você
         </h1>
 
-        <p className="text-base md:text-lg text-gray-200 font-montserrat font-light max-w-2xl">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        <p className="text-base md:text-lg text-gray-200 font-montserrat font-light max-w-4xl">
+          As células são espaços de comunhão, crescimento e cuidado, onde você pode compartilhar sua caminhada, aprender mais da Palavra e criar conexões verdadeiras. 
+          Não importa onde você esteja, sempre haverá um lugar preparado para te receber com amor e propósito.
         </p>
 
         <div className="w-full mt-8 md:mt-12"></div>

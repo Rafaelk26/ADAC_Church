@@ -38,8 +38,8 @@ export function TableInformation(){
 
         
         <>  
-            <div className={`${styles.customScroll} w-full max-h-[320px] overflow-y-auto overflow-x-auto pr-2`}>
-                <table className="w-full mt-5">
+            <div className={`${styles.customScroll} max-w-md w-full max-h-[320px] overflow-y-auto overflow-x-auto pr-2 md:max-w-full`}>
+                <table className="w-7xl mt-5 md:w-full">
                     <thead>
                         <tr className="bg-[#090909] text-left">
                         <th className="py-4 px-4 text-base font-light font-montserrat text-gray-300 rounded-tl-2xl">
@@ -58,10 +58,10 @@ export function TableInformation(){
                         </tr>
                     </thead>
 
-                    <tbody  className={`${styles.customScroll}`}>
+                    <tbody className={`${styles.customScroll} table-row-group w-full`}>
                         {interesses.length === 0 ? ( 
                         <>
-                            <tr className="bg-[#1a1a1a]">
+                            <tr className="bg-[#1a1a1a] w-full">
                                 <td colSpan={4} className="text-center py-16 font-manrope text-gray-400">
                                 Não foi encontrado nenhum interesse
                                 </td>
@@ -70,7 +70,7 @@ export function TableInformation(){
                         ) : (
                         <>
                             {interesses.map((i, index)=> (
-                                <tr key={index} className="odd:bg-[#1a1a1a]/60 even:bg-[#121212]/60">
+                                <tr key={index} className="w-full odd:bg-[#1a1a1a]/60 even:bg-[#121212]/60">
                                     <td className="py-4 px-4">
                                         {i?.nomeTrabalhador}
                                     </td>

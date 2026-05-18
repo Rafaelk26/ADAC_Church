@@ -115,10 +115,10 @@ export function CardMinisters({
                 Informações do Ministério
             </h1>
 
-            <div className="w-full flex mt-4 gap-8">
+            <div className="w-full flex mt-4 gap-8 flex-col md:flex-row">
 
                 {/* INFO */}
-                <div className="w-full max-w-8/12 flex flex-col gap-4">
+                <div className="w-full flex flex-col gap-4 md:max-w-8/12">
                     <div className="w-full">
                         <span className="text-white font-montserrat text-sm font-light">NOME</span>
                         <h1 className="font-manrope font-semibold text-lg">{nomeMinisterio}</h1>
@@ -161,21 +161,21 @@ export function CardMinisters({
                 </div>
 
                 {/* CAPA/BUTTON */}
-                <div className="w-full max-w-4/12 flex flex-col justify-between gap-7">
-                    <div className="flex flex-col gap-2">
+                <div className="w-full flex flex-col justify-between gap-7 md:max-w-4/12">
+                    <div className="flex flex-col items-center gap-2">
                         <span className="text-white font-montserrat text-sm font-light">CAPA</span>
                         
                         <Image 
                         width={1000}
                         height={1000}
-                        className="rounded-xl h-56 w-full object-cover"
+                        className="w-40 rounded-xl h-56 object-cover"
                         alt={`${nomeMinisterio}`}
                         src={getImageSrc()}
                         />
                     </div>
 
                     {/* STATUS */}
-                    <div className="w-full flex gap-2 items-center">
+                    <div className="w-full flex gap-2 items-center justify-center">
                         <div className={`w-5 h-5 rounded-full border 
                             ${statusMinisterio ? "bg-green-400" : "bg-red-500"}
                         `}></div>

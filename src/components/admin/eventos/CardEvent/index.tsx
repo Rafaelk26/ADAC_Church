@@ -105,10 +105,10 @@ export function CardEventos({
                 Informações do Evento
             </h1>
 
-            <div className="w-full flex mt-4 gap-8">
+            <div className="w-full flex mt-4 gap-8 flex-col md:flex-row">
 
                 {/* INFO */}
-                <div className="w-full max-w-8/12 flex flex-col gap-4">
+                <div className="w-full flex flex-col gap-4 md:max-w-8/12">
                     <div className="w-full">
                         <span className="text-white font-montserrat text-sm font-light">NOME</span>
                         <h1 className="font-manrope font-semibold text-lg">{nomeEvento}</h1>
@@ -137,20 +137,20 @@ export function CardEventos({
                 </div>
 
                 {/* CAPA/BUTTON */}
-                <div className="w-full max-w-4/12 flex flex-col justify-between gap-7">
+                <div className="w-full flex flex-col justify-between gap-7 md:max-w-4/12">
                     <div className="flex flex-col gap-2">
                         <span className="text-white font-montserrat text-sm font-light">CAPA</span>
                         
                         <Image 
                         width={1000}
                         height={1000}
-                        className="w-full rounded-xl"
+                        className="w-full rounded-xl h-40 md:h-32"
                         alt={`${nomeEvento}`}
                         src={getImageSrc()}
                         />
                     </div>
 
-                    <div className="flex flex-col items-end gap-4">
+                    <div className="flex flex-row justify-center items-end gap-4 md:flex-col">
                         <button
                         onClick={() => setIsEditOpen(true)}
                         className="

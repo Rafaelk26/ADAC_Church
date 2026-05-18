@@ -13,7 +13,7 @@ export function Main(){
         </h1>
 
         <p className="text-base md:text-lg text-gray-200 font-montserrat font-light max-w-2xl">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.
+          Cada encontro é uma oportunidade única de viver momentos marcantes na presença de Deus, fortalecer sua fé e se conectar com pessoas que caminham no mesmo propósito.
         </p>
 
         <div className="w-full mt-8 md:mt-12"></div>
