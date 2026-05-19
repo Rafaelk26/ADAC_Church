@@ -74,7 +74,7 @@ export function Cell() {
         </div>
 
         <div className="w-full mt-12 flex items-center justify-center">
-            <ButtonLink nome="Visitar uma célula" href="#" />
+            <ButtonLink nome="Visitar uma célula" href="/celulas" />
         </div>
     </section>
   );

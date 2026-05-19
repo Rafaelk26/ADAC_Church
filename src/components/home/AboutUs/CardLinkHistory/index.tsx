@@ -2,12 +2,12 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
 export function CardLinkHistory(
-    {foto, titulo, ano, link}: 
-    { foto: StaticImageData; titulo: string; ano: string; link: string }
+    {foto, titulo, ano, link, onClick}: 
+    { foto: StaticImageData; titulo: string; ano: string; link: string; onClick: () => void }
 ) {
   return (
     <Link href={link} className="max-w-md w-full">
-      <div className="w-full h-40 border rounded-xl hover:scale-105 transition relative overflow-hidden">
+      <div onClick={onClick} className="w-full h-40 border rounded-xl hover:scale-105 transition relative overflow-hidden">
 
         <div className="absolute inset-0 rounded-xl bg-gradient-to-l from-transparent to-[#090909] z-1" />
 

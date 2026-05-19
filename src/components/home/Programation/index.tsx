@@ -21,8 +21,9 @@ export function Programation() {
                         </div>
 
                         <p className="text-left text-base font-montserrat font-light">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting 
-                            industry. Lorem Ipsum has been the industry's standard dummy text.
+                            Participe dos nossos encontros ao longo da semana e fortaleça sua fé em comunhão. 
+                            Temos momentos preparados para todas as idades, com ensino, oração e crescimento 
+                            espiritual.
                         </p>
                     </div>
 
