@@ -23,7 +23,9 @@ export function Header() {
       <div className="w-full max-w-7xl px-4 flex items-center justify-between">
 
         {/* Logo */}
-        <Image src={ADACLogo} alt="ADAC Church" width={180} height={180} />
+        <a onClick={() => setOpen(false)} href="/">
+          <Image src={ADACLogo} alt="ADAC Church" width={180} height={180} />
+        </a>
 
         {/* MENU DESKTOP */}
         {isAdminRoute ? (
@@ -41,13 +43,14 @@ export function Header() {
         ):(
           <>
             <nav className="hidden md:flex gap-6">
+              <a href="/" className="text-sm font-montserrat hover:text-blue-400 transition-colors">HOME</a>
               <a href="/ministerios" className="text-sm font-montserrat hover:text-blue-400 transition-colors">MINISTÉRIOS</a>
               <a href="/celulas" className="text-sm font-montserrat hover:text-blue-400 transition-colors">CÉLULAS</a>
               <a href="/#visit" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PLANEJAR VISITA</a>
               <a href="/#programation" className="text-sm font-montserrat hover:text-blue-400 transition-colors">PROGRAMAÇÃO</a>
               <a href="/about" className="text-sm font-montserrat hover:text-blue-400 transition-colors">QUEM SOMOS</a>
               <a href="/eventos" className="text-sm font-montserrat hover:text-blue-400 transition-colors">EVENTOS</a>
-              <a href="/auth/login" className="text-sm font-montserrat hover:text-blue-400 transition-colors">ÁREA DO USUÁRIO</a>
+              <a href="/auth/login" className="text-sm font-montserrat hover:text-blue-400 transition-colors">ÁREA ADMIN</a>
             </nav>
           </>
         )}
@@ -87,13 +90,14 @@ export function Header() {
           </>
         ):(
           <>
+            <a onClick={() => setOpen(false)} href="/">HOME</a>
             <a onClick={() => setOpen(false)} href="/ministerios">MINISTÉRIOS</a>
             <a onClick={() => setOpen(false)} href="/celulas">CÉLULAS</a>
             <a onClick={() => setOpen(false)} href="/#visit">PLANEJAR VISITA</a>
             <a onClick={() => setOpen(false)} href="/#programation">PROGRAMAÇÃO</a>
             <a onClick={() => setOpen(false)} href="/about">QUEM SOMOS</a>
             <a onClick={() => setOpen(false)} href="/eventos">EVENTOS</a>
-            <a onClick={() => setOpen(false)} href="/auth/login">ÁREA DO USUÁRIO</a>
+            <a onClick={() => setOpen(false)} href="/auth/login">ÁREA ADMIN</a>
           </>
         )}
       </div>
