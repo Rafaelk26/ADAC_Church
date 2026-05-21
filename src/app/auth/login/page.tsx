@@ -77,7 +77,7 @@ export default function Login() {
                 )}
             </div>
 
-            <a href="/auth/reset" className="w-max underline hover:text-blue-400 transition-all">Esqueceu a senha?</a>
+            {/* <a href="/auth/reset" className="w-max underline hover:text-blue-400 transition-all">Esqueceu a senha?</a> */}
 
             <button
             type="submit"

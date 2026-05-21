@@ -23,7 +23,7 @@ export default function Test() {
     function sigIn() {
         fetch("/api/register", {
           method: "POST",
-          body: JSON.stringify({ email: "rafaelk262002@gmail.com", senha: "R@fa2611" }),
+          body: JSON.stringify({ email: "isa.desimonefernandes@gmail.com", senha: "Is@dmin01*" }),
       })
     }
 
