@@ -13,7 +13,7 @@ import { Programation } from "@/components/home/Programation";
 import { Social } from "@/components/home/Social";
 import { Visit } from "@/components/home/Visit";
 
-import foto from "../../public/assets/BANNER 1.png";
+import foto from "../../public/assets/BackgroundHome.webp";
 
 export default function Home() {
 
