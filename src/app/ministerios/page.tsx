@@ -14,7 +14,7 @@ import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp
 import { Ministerio, Trabalhador } from "@/types/types";
 
 import styles from './styles.module.css'
-import foto from "../../../public/assets/BANNER 2.png";
+import foto from "../../../public/assets/Ministerios.webp";
 
 export default function Ministerios() {
 

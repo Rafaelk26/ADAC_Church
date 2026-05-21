@@ -4,7 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ADACLogo from "../../../../public/assets/LogoAdac.svg";
-import NatureIMG from "../../../../public/assets/cardsImage.jpg";
+import SurgimentoIMG from "../../../../public/assets/Surgimento.webp";
+import TransformacaoIMG from "../../../../public/assets/Transformação.webp";
+import DedicacaoIMG from "../../../../public/assets/Dedicação.webp";
 import { CardLinkHistory } from "./CardLinkHistory";
 
 
@@ -44,7 +46,7 @@ export function AboutUs() {
                     {/* CARDS */}
                     <div className="w-96 md:w-1/2 flex flex-col gap-8 items-center">
                         {/* Surgimento */}
-                        <CardLinkHistory onClick={() => setSurgimento(!surgimento)} foto={NatureIMG} link="#" titulo="Surgimento" ano="2006" />
+                        <CardLinkHistory onClick={() => setSurgimento(!surgimento)} foto={SurgimentoIMG} link="#" titulo="Surgimento" ano="2006" />
                         
                         <AnimatePresence>
                             {surgimento && (
@@ -66,7 +68,7 @@ export function AboutUs() {
                             )}
                         </AnimatePresence>
                         {/* Transformação */}
-                        <CardLinkHistory onClick={() => setTransformacao(!transformacao)} foto={NatureIMG} link="#" titulo="Transformação" ano="2016" />
+                        <CardLinkHistory onClick={() => setTransformacao(!transformacao)} foto={TransformacaoIMG} link="#" titulo="Transformação" ano="2016" />
                         {transformacao && (
                             <AnimatePresence>
                                 <motion.p
@@ -88,7 +90,7 @@ export function AboutUs() {
                         )}
 
                         {/* Diferença */}
-                        <CardLinkHistory onClick={() => setDiferenca(!diferenca)} foto={NatureIMG} link="#" titulo="Diferença" ano="2026" />
+                        <CardLinkHistory onClick={() => setDiferenca(!diferenca)} foto={DedicacaoIMG} link="#" titulo="Diferença" ano="2026" />
                         {diferenca && (
                             <AnimatePresence>
                                 <motion.p

@@ -7,7 +7,7 @@ import { Main } from "@/components/eventos/Main";
 import { BannerEvent } from "@/components/eventos/BannerEvent";
 import { Footer } from "@/components/all/Footer";
 
-import foto from "../../../public/assets/BANNER 3.png";
+import foto from "../../../public/assets/Eventos.webp";
 
 export default function Eventos() {
 

@@ -17,7 +17,7 @@ import { fetchAllCelulas } from "@/functions/GET/fetchAllCelulas";
 
 import styles from "./styles.module.css";
 
-import foto from "../../../public/assets/BANNER 2.png";
+import foto from "../../../public/assets/Celulas.webp";
 
 export default function Celulas() {
   
