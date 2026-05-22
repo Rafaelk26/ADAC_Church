@@ -51,7 +51,7 @@ export function CellCard({fotoCelula, nomeCelula, liderWhatsapp, faixaCelula, ba
                 <div className="flex items-center gap-2">
 
                     {generoCelula === "Masculino" && <IoMdMan className="bg-blue-500 p-0.5 rounded-full" size={20} />}
-                    {generoCelula === "Feminino" && <IoIosWoman className="bg-pink-500 p-0.5 rounded-full" size={20} />}
+                    {generoCelula === "Feminina" && <IoIosWoman className="bg-pink-500 p-0.5 rounded-full" size={20} />}
                     {generoCelula === "Kids" && <TbWomanFilled className="bg-yellow-600 p-0.5 rounded-full" size={20} />}
                     {generoCelula === "Casal" && <ImManWoman className="bg-red-600 p-0.5 rounded-full" size={18} />}
                     {generoCelula === "Mista" && <ImManWoman className="bg-purple-600 p-0.5 rounded-full" size={18} />}
