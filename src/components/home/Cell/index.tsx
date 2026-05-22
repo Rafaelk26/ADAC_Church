@@ -32,7 +32,7 @@ export function Cell() {
             <motion.div
             animate={{ y: ["0%", "-50%"] }}
             transition={{
-            duration: 15,
+            duration: 50,
             repeat: Infinity,
             ease: "linear",
             }}
@@ -47,7 +47,7 @@ export function Cell() {
             <motion.div
             animate={{ y: ["-50%", "0%"] }}
             transition={{
-            duration: 15,
+            duration: 50,
             repeat: Infinity,
             ease: "linear",
             }}
@@ -62,7 +62,7 @@ export function Cell() {
             <motion.div
             animate={{ y: ["0%", "-50%"] }}
             transition={{
-            duration: 15,
+            duration: 50,
             repeat: Infinity,
             ease: "linear",
             }}

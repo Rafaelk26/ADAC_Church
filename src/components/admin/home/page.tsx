@@ -78,10 +78,16 @@ export function AdminHomeClient(){
                     {/* CARDS */}
                     <div className={`${styles.customScroll} w-full flex gap-4 overflow-x-auto p-1`}>
                     <CardInformation
-                    nome="Trabalhadores" 
-                    numeros={animatedNumber(trabalhador.length)}
-                    legenda="Pessoas interessadas em trabalhar em ministério da igreja."
-                    link="/admin/trabalhadores" />
+                    nome="Células Ativas"
+                    numeros={animatedNumber(celulas.length)}
+                    legenda="Células abertas para novos membros participarem."
+                    link="/admin/celulas" />
+
+                    <CardInformation
+                    nome="Ministérios Abertos" 
+                    numeros={animatedNumber(ministerio.length)}
+                    legenda="Ministérios abertos para servir ao Senhor com excelência."
+                    link="/admin/ministerios" />
 
                     <CardInformation
                     nome="Eventos Ativos" 
@@ -90,22 +96,16 @@ export function AdminHomeClient(){
                     link="/admin/eventos" />
 
                     <CardInformation
-                    nome="Células Ativas"
-                    numeros={animatedNumber(celulas.length)}
-                    legenda="Células abertas para novos membros participarem."
-                    link="/admin/celulas" />
+                    nome="Trabalhadores" 
+                    numeros={animatedNumber(trabalhador.length)}
+                    legenda="Pessoas interessadas em trabalhar em ministério da igreja."
+                    link="/admin/trabalhadores" />
 
                     <CardInformation
                     nome="Visitantes Interessados" 
                     numeros={animatedNumber(visitante.length)}
                     legenda="Pessoas interessadas em fazer uma visita na igreja."
                     link="/admin/visitantes" />
-
-                    <CardInformation
-                    nome="Ministérios Abertos" 
-                    numeros={animatedNumber(ministerio.length)}
-                    legenda="Ministérios abertos para servir ao Senhor com excelência."
-                    link="/admin/ministerios" />
                     </div>
 
 

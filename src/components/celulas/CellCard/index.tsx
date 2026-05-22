@@ -6,7 +6,7 @@ import { GiSwordwoman } from "react-icons/gi";
 import { IoMdMan } from "react-icons/io";
 import { formatNumberForVisit } from "@/functions/ALL/formatNumberForVisit";
 
-import foto from "../../../../public/assets/bgCellCard.png";
+import foto from "../../../../public/assets/LogoAdac.svg";
 import { Celula } from "@/types/types";
 
 
@@ -20,14 +20,23 @@ export function CellCard({fotoCelula, nomeCelula, liderWhatsapp, faixaCelula, ba
             <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#090909] to-90% z-10" />
 
             {/* Imagem */}
-            <Image
-                key={fotoCelula}
-                src={fotoCelula || foto}
-                alt="Nome da célula"
+            {fotoCelula ? (
+                <Image 
+                src={fotoCelula}
+                alt=""
                 width={500}
                 height={500}
                 className="w-full h-full object-cover"
-            />
+                />
+            ) : (
+                <Image 
+                src={foto}
+                alt=""
+                width={500}
+                height={500}
+                className="w-full h-full object-cover"
+                />
+            )}
 
             {/* CONTEÚDO */}
             <div className="absolute bottom-4 left-4 z-20 flex flex-col gap-1">

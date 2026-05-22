@@ -13,11 +13,13 @@ export async function handleNewVisit(form: Visitante){
 
         if(error) throw error;
 
+        toast.dismiss();
         toast.success("Dados enviados.");
         return { data: true };
     }
     catch(err){
         console.error("Erro ao enviar dados.", err)
+        toast.dismiss();
         toast.error("Erro ao enviar dados.")
     }
 }

@@ -1,8 +1,6 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { celulaSchema, CelulaFormData } from "@/components/admin/celulas/page";
 import toast from "react-hot-toast";
-import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
-
 
 export async function handleNewCelula(data: CelulaFormData) {
 
@@ -50,11 +48,12 @@ export async function handleNewCelula(data: CelulaFormData) {
       .single();
 
     if (error) throw error;
-
+    
+    toast.dismiss();
     toast.success("Célula cadastrada!");
-
     return { success: true, data: newCelula };
   } catch (error) {
+    toast.dismiss();
     toast.error("Erro ao criar célula!");
     console.error("Erro ao criar célula:", error);
     return { success: false };

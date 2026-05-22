@@ -31,5 +31,5 @@ export default function Test() {
     
   }, []);
 
-  return <div>Testando Supabase...</div>;
+  return <div>Cadastrando novo usuário...</div>;
 }
