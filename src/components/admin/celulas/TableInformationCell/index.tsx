@@ -295,6 +295,7 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
                                         <option value="Capricórnio II">Capricórnio II</option>
                                         <option value="Capricórnio III">Capricórnio III</option>
                                         <option value="Caputera">Caputera</option>
+                                        <option value="Canto do Mar">Canto do Mar</option>
                                         <option value="Centro">Centro</option>
                                         <option value="Cidade Jardim">Cidade Jardim</option>
                                         <option value="Estrela D' Alva">Estrela D' Alva</option>
@@ -383,7 +384,7 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
                                     <input
                                         type="text"
                                         name="liderWhatsapp"
-                                        value={selectedCell?.liderWhatsapp}
+                                        defaultValue={selectedCell?.liderWhatsapp}
                                         onChange={handleChange}
                                         className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
                                         placeholder:text-white"
