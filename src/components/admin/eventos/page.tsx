@@ -8,6 +8,7 @@ import { Footer } from "@/components/all/Footer";
 import { CardEventos } from "@/components/admin/eventos/CardEvent";
 import { fetchAllEventos } from "@/functions/GET/fetchAllEventos";
 import { handleNewEvento } from "@/functions/POST/handleNewEvent";
+import { animatedNumber } from "@/functions/ALL/animatedNumber";
 
 import { Eventos } from "@/types/types";
 
@@ -95,7 +96,7 @@ export function EventosClient(){
             <div className="relative flex flex-col items-center w-full bg-[#282828]/70 z-20 mt-6 mb-20 p-7 rounded-tr-4xl rounded-tl-4xl">
                 <div className="max-w-7xl w-full flex gap-4 justify-between items-center">
                     <h4 className="text-2xl font-montserrat font-normal text-white">Total de Resultados</h4>
-                    <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">{eventos.length}</h1>
+                    <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">{animatedNumber(eventos.length)}</h1>
                 </div>    
 
                 {/* EVENT CARD'S */}

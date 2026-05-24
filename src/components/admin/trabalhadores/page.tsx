@@ -1,14 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/all/Header";
 import { Footer } from "@/components/all/Footer";
 import { TableInformation } from "@/components/admin/home/TableInformation";
+import { fetchAllTrabalhadores } from "@/functions/GET/fetchAllTrabalhadores";
+import { animatedNumber } from "@/functions/ALL/animatedNumber";
+
 import { Trabalhador } from "@/types/types";
 
 import foto from "../../../../public/assets/backgroundAdmin.png"
-import { useEffect, useState } from "react";
-import { fetchAllTrabalhadores } from "@/functions/GET/fetchAllTrabalhadores";
 
 export function TrabalhadoresClient(){
 
@@ -49,7 +51,7 @@ export function TrabalhadoresClient(){
                     <div className="relative flex flex-col items-center w-full bg-[#282828]/70 z-20 mt-6 mb-10 p-7 rounded-tr-4xl rounded-tl-4xl">
                         <div className="max-w-7xl w-full flex gap-4 justify-between items-center">
                             <h4 className="text-2xl font-montserrat font-normal text-white">Total de Resultados</h4>
-                            <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">{interesses.length}</h1>
+                            <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">{animatedNumber(interesses.length)}</h1>
                         </div>    
 
                         {/* TABLE INFORMATION OF WORK */}

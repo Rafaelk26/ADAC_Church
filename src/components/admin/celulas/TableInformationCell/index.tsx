@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdTrash } from "react-icons/io";
 import { Select } from "@/components/all/Select";
@@ -13,6 +13,7 @@ import { Celula } from "@/types/types";
 import styles from "./styles.module.css";
 import banner from "../../../../../public/assets/BANNER 3.png"
 import { formatHour } from "@/functions/ALL/formatHour";
+import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
 
 export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], setCelulas: any }) {
 
@@ -20,6 +21,7 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [previewEdit, setPreviewEdit] = useState<string | null>(null);
     const [selectedCell, setSelectedCell] = useState<Celula | null>(null);
+    const [phone, setPhone] = useState(selectedCell?.liderWhatsapp || "");
 
     // State de envio
     const [dataCellForm, setDataCellForm] = useState<Partial<CelulaFormData>>({});
@@ -51,6 +53,13 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
             }));
         }
     }
+
+    useEffect(() => {
+        if(selectedCell?.liderWhatsapp){
+            const formattedPhone = formatNumberForWhatsApp(selectedCell.liderWhatsapp);
+            setPhone(formattedPhone);
+        }
+    }, [selectedCell]);
 
     return(
 
@@ -384,8 +393,11 @@ export function TableInformationCell({ celulas, setCelulas }: { celulas: any[], 
                                     <input
                                         type="text"
                                         name="liderWhatsapp"
-                                        defaultValue={selectedCell?.liderWhatsapp}
-                                        onChange={handleChange}
+                                        value={phone}
+                                        onChange={(e)=> {
+                                            const formattedPhone = formatNumberForWhatsApp(e.target.value);
+                                            setPhone(formattedPhone);
+                                        }}
                                         className="w-full mb-3 p-2 rounded bg-[#1a1a1a] text-white mt-4
                                         placeholder:text-white"
                                         placeholder="WhatsApp do Líder"

@@ -11,14 +11,14 @@ import { Select } from "@/components/all/Select";
 import { TableInformationCell } from "@/components/admin/celulas/TableInformationCell";
 import { handleNewCelula } from "@/functions/POST/handleNewCelula";
 import { fetchAllCelulas } from "@/functions/GET/fetchAllCelulas";
+import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
+import { animatedNumber } from "@/functions/ALL/animatedNumber";
 
 import { Celula } from "@/types/types";
 
 import styles from "./styles.module.css";
-
 import foto from "../../../../public/assets/backgroundAdmin.png";
 import uploadImage from "../../../../public/assets/uploadImage.png";
-import { formatNumberForWhatsApp } from "@/functions/ALL/formatNumberForWhatsapp";
 
 
 export const celulaSchema = z.object({
@@ -153,7 +153,7 @@ export function CelulasClient(){
             <div className="relative flex flex-col items-center w-full bg-[#282828]/70 z-20 mt-6 mb-20 p-7 rounded-tr-4xl rounded-tl-4xl">
                 <div className="max-w-7xl w-full flex gap-4 justify-between items-center">
                     <h4 className="text-2xl font-montserrat font-normal text-white">Total de Resultados</h4>
-                    <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">{celulasFiltradas.length}</h1>
+                    <h1 className="text-5xl md:text-4xl font-montserrat font-semibold text-white">{animatedNumber(celulasFiltradas.length)}</h1>
                 </div>  
 
                 {/* FILTERS */}

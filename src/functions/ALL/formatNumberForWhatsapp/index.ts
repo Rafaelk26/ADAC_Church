@@ -1,6 +1,6 @@
-export function formatNumberForWhatsApp(value: string) {
+export function formatNumberForWhatsApp(value: string | undefined): string {
   // Remove tudo que não for número
-  const digits = value.replace(/\D/g, "");
+  const digits = value?.replace(/\D/g, "") || "";
 
   // Aplica a máscara de telefone
   if (digits.length <= 2) {
