@@ -27,6 +27,7 @@ export function CellCard({fotoCelula, nomeCelula, liderWhatsapp, faixaCelula, ba
                 width={500}
                 height={500}
                 className="w-full h-full object-cover"
+                unoptimized
                 />
             ) : (
                 <Image 
@@ -35,6 +36,7 @@ export function CellCard({fotoCelula, nomeCelula, liderWhatsapp, faixaCelula, ba
                 width={500}
                 height={500}
                 className="w-full h-full object-cover"
+                unoptimized
                 />
             )}
 
