@@ -1,4 +1,5 @@
 /*export function formatDate(d: string) {
+export function formatDate(d: string) {
   const data = new Date(d);
 
   const formatador = new Intl.DateTimeFormat('pt-BR', {
